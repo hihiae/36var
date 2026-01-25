@@ -1555,13 +1555,13 @@ function redzlib:MakeWindow(Configs)
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
-			Title = "Tuấn Anh IOS",
-			Text = "Mày Tắt Script Của Bố Mày Có Việc Gì Không ?",
+			Title = "Synet Hub",
+			Text = "Are you sure you want to turn it off?",
 			Options = {
-				{"Tắt Ạ", function()
+				{"Yes", function()
 					ScreenGui:Destroy()
 				end},
-				{"Không Tắt Ạ"}
+				{"No"}
 			}
 		})
 	end

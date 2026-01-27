@@ -1954,12 +1954,15 @@ function redzlib:MakeWindow(Configs)
 			end
 			return Button
 		end
+		
 		function Tab:AddToggle(Configs)
 			local TName = Configs[1] or Configs.Name or Configs.Title or "Toggle"
 			local TDesc = Configs.Desc or Configs.Description or ""
 			local Callback = Funcs:GetCallback(Configs, 3)
 			local Flag = Configs[4] or Configs.Flag or false
 			local Default = Configs[2] or Configs.Default or false
+			
+			-- Kiểm tra settings đã lưu
 			if CheckFlag(Flag) then Default = GetFlag(Flag) end
 			
 			local Button, LabelFunc = ButtonFrame(Container, TName, TDesc, UDim2.new(1, -38))
@@ -1969,7 +1972,7 @@ function redzlib:MakeWindow(Configs)
 				Position = UDim2.new(1, -10, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5),
 				BackgroundColor3 = Theme["Color Stroke"]
-			}), "Stroke")Make("Corner", ToggleHolder, UDim.new(0.5, 0))
+			}), "Stroke")Make("Corner", ToggleHolder, UDim.new(0, 50)) -- Bo tròn đẹp hơn
 			
 			local Slider = Create("Frame", ToggleHolder, {
 				BackgroundTransparency = 1,
@@ -1985,25 +1988,46 @@ function redzlib:MakeWindow(Configs)
 				BackgroundColor3 = Theme["Color Theme"]
 			}), "Theme")Make("Corner", Toggle, UDim.new(0.5, 0))
 			
-			local WaitClick
-			local function SetToggle(Val)
-				if WaitClick then return end
+			local WaitClick = false
+			local function SetToggle(Val, IsLoading)
+				if WaitClick and not IsLoading then return end
+				WaitClick = true
 				
-				WaitClick, Default = true, Val
+				Default = Val
 				SetFlag(Flag, Default)
-				Funcs:FireCallback(Callback, Default)
+				
+				-- Gọi Callback (Chức năng)
+				task.spawn(function()
+					Funcs:FireCallback(Callback, Default)
+				end)
+
+				-- Xử lý hiển thị (Visual)
 				if Default then
-					CreateTween({Toggle, "Position", UDim2.new(1, 0, 0.5), 0.25})
-					CreateTween({Toggle, "BackgroundTransparency", 0, 0.25})
-					CreateTween({Toggle, "AnchorPoint", Vector2.new(1, 0.5), 0.25, Wait or false})
+					if IsLoading then
+						-- Nếu đang load settings thì set vị trí luôn, không chạy tween để tránh lỗi hiển thị
+						Toggle.Position = UDim2.new(1, 0, 0.5)
+						Toggle.BackgroundTransparency = 0
+						Toggle.AnchorPoint = Vector2.new(1, 0.5)
+					else
+						CreateTween({Toggle, "Position", UDim2.new(1, 0, 0.5), 0.25})
+						CreateTween({Toggle, "BackgroundTransparency", 0, 0.25})
+						CreateTween({Toggle, "AnchorPoint", Vector2.new(1, 0.5), 0.25})
+					end
 				else
-					CreateTween({Toggle, "Position", UDim2.new(0, 0, 0.5), 0.25})
-					CreateTween({Toggle, "BackgroundTransparency", 0.8, 0.25})
-					CreateTween({Toggle, "AnchorPoint", Vector2.new(0, 0.5), 0.25, Wait or false})
+					if IsLoading then
+						Toggle.Position = UDim2.new(0, 0, 0.5)
+						Toggle.BackgroundTransparency = 0.8
+						Toggle.AnchorPoint = Vector2.new(0, 0.5)
+					else
+						CreateTween({Toggle, "Position", UDim2.new(0, 0, 0.5), 0.25})
+						CreateTween({Toggle, "BackgroundTransparency", 0.8, 0.25})
+						CreateTween({Toggle, "AnchorPoint", Vector2.new(0, 0.5), 0.25})
+					end
 				end
+				
 				WaitClick = false
-			end;task.spawn(SetToggle, Default)
-			
+			end
+			SetToggle(Default, true)
 			Button.Activated:Connect(function()
 				SetToggle(not Default)
 			end)
@@ -2022,7 +2046,7 @@ function redzlib:MakeWindow(Configs)
 					if WaitClick and Val2 then
 						repeat task.wait() until not WaitClick
 					end
-					task.spawn(SetToggle, Val1)
+					SetToggle(Val1)
 				elseif type(Val1) == "function" then
 					Callback = Val1
 				end

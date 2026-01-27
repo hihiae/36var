@@ -2035,7 +2035,10 @@ function redzlib:MakeWindow(Configs)
 			local Toggle = {}
 			function Toggle:Visible(...) Funcs:ToggleVisible(Button, ...) end
 			function Toggle:Destroy() Button:Destroy() end
-			function Toggle:Callback(...) Funcs:InsertCallback(Callback, ...)() end
+			function Toggle:Callback(...) 
+				local func = Funcs:InsertCallback(Callback, ...)
+				func(Default)
+			end
 			function Toggle:Set(Val1, Val2)
 				if type(Val1) == "string" and type(Val2) == "string" then
 					LabelFunc:SetTitle(Val1)
@@ -2352,8 +2355,10 @@ function redzlib:MakeWindow(Configs)
 			local Dropdown = {}
 			function Dropdown:Visible(...) Funcs:ToggleVisible(Button, ...) end
 			function Dropdown:Destroy() Button:Destroy() end
-			function Dropdown:Callback(...) Funcs:InsertCallback(Callback, ...)(Selected) end
-			
+			function Dropdown:Callback(...) 
+				local func = Funcs:InsertCallback(Callback, ...)
+				func(Selected) 
+			end			
 			function Dropdown:Add(...)
 				local NewOptions = {...}
 				if type(NewOptions[1]) == "table" then
@@ -2526,8 +2531,10 @@ function redzlib:MakeWindow(Configs)
 					SetSlider(NewVal1)
 				end
 			end
-			function Slider:Callback(...) Funcs:InsertCallback(Callback, ...)(tonumber(Default)) end
-			function Slider:Visible(...) Funcs:ToggleVisible(Button, ...) end
+			function Slider:Callback(...) 
+				local func = Funcs:InsertCallback(Callback, ...)
+				func(tonumber(Default)) 
+			end			function Slider:Visible(...) Funcs:ToggleVisible(Button, ...) end
 			function Slider:Destroy() Button:Destroy() end
 			return Slider
 		end

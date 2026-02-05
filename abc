@@ -1828,6 +1828,27 @@ function u1.Window(_, p74)
         end)
 
         local v396 = {
+            AddSection = function(_, p1)
+                local _SectionFrame = Instance.new('Frame')
+                local _SectionTitle = Instance.new('TextLabel')
+
+                _SectionFrame.Name = p1 .. "Section"
+                _SectionFrame.Parent = _ScrollingFrame2
+                _SectionFrame.BackgroundTransparency = 1
+                _SectionFrame.BorderSizePixel = 0
+                _SectionFrame.Size = UDim2.new(1, -8, 0, 35)
+
+                _SectionTitle.Name = "SectionTitle"
+                _SectionTitle.Parent = _SectionFrame
+                _SectionTitle.BackgroundTransparency = 1
+                _SectionTitle.Position = UDim2.new(0, 5, 0, 12)
+                _SectionTitle.Size = UDim2.new(1, -10, 1, -10)
+                _SectionTitle.Font = Enum.Font.GothamBold
+                _SectionTitle.Text = tostring(p1):upper()
+                _SectionTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
+                _SectionTitle.TextSize = 12
+                _SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
+            end,
             AddButton = function(_, p242)
                 local u243 = (type(p1) == "string" and p2 or p1) or {}
                 u243.Title = u243.Title or 'Button'

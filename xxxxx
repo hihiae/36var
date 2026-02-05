@@ -381,7 +381,7 @@ function u1.Notify(_, p48)
         })
         task.wait(u49.Duration / 1.2)
 
-        local Counts = 0
+        Counts = Counts - 1
 
         local v73 = _Frame3
 
@@ -1829,8 +1829,7 @@ function u1.Window(_, p74)
 
         local v396 = {
             AddButton = function(_, p242)
-                local u243 = p242 or {}
-
+                local u243 = (type(p1) == "string" and p2 or p1) or {}
                 u243.Title = u243.Title or 'Button'
                 u243.Icon = u243.Icon or u215.Icon
                 u243.ClickName = u243.ClickName or 'Click'
@@ -1950,7 +1949,7 @@ function u1.Window(_, p74)
                 end)
             end,
             AddToggle = function(_, p254)
-                local u255 = p254 or {}
+                local u255 = (type(p1) == "string" and p2 or p1) or {}
 
                 u255.Title = u255.Title or 'Toggle'
                 u255.Description = u255.Description or ''
@@ -2093,67 +2092,19 @@ function u1.Window(_, p74)
 
                 function u268.SetValue(_, p270)
                     if p270 then
-                        local v271 = {
-                            _Frame51,
-                            0.5,
-                            'BackgroundTransparency',
-                            0,
-                        }
-
-                        u1.TweenObject(v271)
-                        u1.TweenObject({
-                            _Frame52,
-                            0.5,
-                            'BackgroundColor3',
-                            Color3.fromRGB(4, 3, 1),
-                        })
-                        u1.TweenObject({
-                            _Frame52,
-                            0.5,
-                            'Position',
-                            UDim2.new(0, 17, 0.5, 0),
-                        })
-                        u1.TweenObject({
-                            _UIStroke16,
-                            0.5,
-                            'Color',
-                            Color3.fromRGB(93, 197, 248),
-                        })
-
+                        u1.TweenObject({_Frame51, 0.5, 'BackgroundTransparency', 0})
+                        u1.TweenObject({_Frame52, 0.5, 'BackgroundColor3', Color3.fromRGB(4, 3, 1)})
+                        u1.TweenObject({_Frame52, 0.5, 'Position', UDim2.new(0, 17, 0.5, 0)})
+                        u1.TweenObject({_UIStroke16, 0.5, 'Color', Color3.fromRGB(93, 197, 248)})
                         _TextLabel21.Text = 'On'
                     else
-                        local v272 = {
-                            _Frame51,
-                            0.5,
-                            'BackgroundTransparency',
-                            0.999,
-                        }
-
-                        u1.TweenObject(v272)
-                        u1.TweenObject({
-                            _Frame52,
-                            0.5,
-                            'BackgroundColor3',
-                            Color3.fromRGB(113, 111, 112),
-                        })
-                        u1.TweenObject({
-                            _Frame52,
-                            0.5,
-                            'Position',
-                            UDim2.new(0, 2, 0.5, 0),
-                        })
-                        u1.TweenObject({
-                            _UIStroke16,
-                            0.5,
-                            'Color',
-                            Color3.fromRGB(113, 111, 112),
-                        })
-
+                        u1.TweenObject({_Frame51, 0.5, 'BackgroundTransparency', 0.999})
+                        u1.TweenObject({_Frame52, 0.5, 'BackgroundColor3', Color3.fromRGB(113, 111, 112)})
+                        u1.TweenObject({_Frame52, 0.5, 'Position', UDim2.new(0, 2, 0.5, 0)})
+                        u1.TweenObject({_UIStroke16, 0.5, 'Color', Color3.fromRGB(113, 111, 112)})
                         _TextLabel21.Text = 'Off'
                     end
-
                     u268.Enabled = p270
-
                     u255.Callback(u268.Enabled)
                 end
 
@@ -2172,7 +2123,7 @@ function u1.Window(_, p74)
                 return u268
             end,
             AddDropdown = function(_, p273)
-                local u274 = p273 or {}
+                local u274 = (type(p1) == "string" and p2 or p1) or {}
 
                 u274.Title = u274.Title or 'Dropdown'
                 u274.Description = u274.Description or ''
@@ -2462,36 +2413,14 @@ function u1.Window(_, p74)
                         end
                         if v308.ClassName == 'UIListLayout' or not table.find(u294.Value, v308.OptionSelecting.Text) then
                             if v308.ClassName ~= 'UIListLayout' and not table.find(u294.Value, v308.OptionSelecting.Text) then
-                                u1.TweenObject({
-                                    v308,
-                                    0.4,
-                                    'BackgroundTransparency',
-                                    0.999,
-                                })
-                                u1.TweenObject({
-                                    v308.ChooseFrame,
-                                    0.4,
-                                    'Size',
-                                    UDim2.new(0, 1, 0, 0),
-                                })
-
+                                u1.TweenObject({v308,0.4,'BackgroundTransparency',0.999,})
+                                u1.TweenObject({v308.ChooseFrame,0.4,'Size',UDim2.new(0, 1, 0, 0),})
                                 v308.ChooseFrame.UIStroke.Enabled = false
                             end
                         else
                             v308.ChooseFrame.UIStroke.Enabled = true
-
-                            u1.TweenObject({
-                                v308,
-                                0.4,
-                                'BackgroundTransparency',
-                                0.95,
-                            })
-                            u1.TweenObject({
-                                v308.ChooseFrame,
-                                0.4,
-                                'Size',
-                                UDim2.new(0, 1, 0, 10),
-                            })
+                            u1.TweenObject({v308,0.4,'BackgroundTransparency',0.95,})
+                            u1.TweenObject({v308.ChooseFrame,0.4,'Size',UDim2.new(0, 1, 0, 10),})
                         end
                     end
 
@@ -2669,7 +2598,7 @@ function u1.Window(_, p74)
                 return u294
             end,
             AddSlider = function(_, p336)
-                local u337 = p336 or {}
+                local u337 = (type(p1) == "string" and p2 or p1) or {}
 
                 u337.Title = u337.Title or 'Slider'
                 u337.Description = u337.Description or ''
@@ -2872,7 +2801,7 @@ function u1.Window(_, p74)
                 return u352
             end,
             AddInput = function(_, p367)
-                local u368 = p367 or {}
+                local u368 = (type(p1) == "string" and p2 or p1) or {}
 
                 u368.Title = u368.Title or 'Input'
                 u368.Description = u368.Description or ''
@@ -3011,7 +2940,7 @@ function u1.Window(_, p74)
                 end)
             end,
             AddParagraph = function(_, p382)
-                local v383 = p382 or {}
+                local v383 = (type(p1) == "string" and p2 or p1) or {}
 
                 v383.Title = v383.Title or 'Paragraph'
                 v383.Content = v383.Content or ''

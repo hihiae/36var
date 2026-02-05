@@ -381,7 +381,7 @@ function u1.Notify(_, p48)
         })
         task.wait(u49.Duration / 1.2)
 
-        Counts = Counts - 1
+        local Counts = 0
 
         local v73 = _Frame3
 
@@ -1970,10 +1970,12 @@ function u1.Window(_, p74)
                 local _UIStroke16 = Instance.new('UIStroke')
                 local _TextButton15 = Instance.new('TextButton')
                 local _TextLabel21 = Instance.new('TextLabel')
+                local u268 = {
+                    Enabled = u255.Default,
+                }
                 function u268:OnChanged(func)
-    			u255.Callback = func
-		end
-
+                    u255.Callback = func
+                end
                 _Frame50.Name = u255.Title
                 _Frame50.Parent = _ScrollingFrame2
                 _Frame50.BackgroundColor3 = Color3.fromRGB(255, 255, 255)

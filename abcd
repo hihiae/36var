@@ -2176,6 +2176,9 @@ function u1.Window(_, p74)
                     List = u274.Values,
                     Value = u274.Default,
                 }
+                function u294:OnChanged(func)
+                    u274.Callback = func
+                end
 
                 _Frame55.Name = 'DropMore'
                 _Frame55.Parent = _Frame42
@@ -2647,6 +2650,9 @@ function u1.Window(_, p74)
                     Default = u337.Default,
                     Values = 0,
                 }
+                function u352:OnChanged(func)
+                    u337.Callback = func
+                end
 
                 _Frame60.Name = u337.Title
                 _Frame60.Parent = _ScrollingFrame2

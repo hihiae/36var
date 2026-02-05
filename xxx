@@ -1,0 +1,3128 @@
+-- ts file was generated at discord.gg/25ms
+
+local u1 = {
+    TweenService = game:GetService('TweenService'),
+    player = game.Players.LocalPlayer,
+    WS = workspace,
+    plrGUI = game:WaitForChild('CoreGui'),
+    UserInputService = game:GetService('UserInputService'),
+    Mouse = game.Players.LocalPlayer:GetMouse(),
+    ViewportSize = workspace.CurrentCamera.ViewportSize,
+    Stepped = game:GetService('RunService').Stepped,
+}
+local _Icon = u1.Mouse.Icon
+
+function u1.TweenObject(p3)
+    p3.Object = p3.Object or p3[1]
+    p3.Time = p3.Time or p3[2]
+    p3.OldValue = p3.OldValue or p3[3]
+    p3.NewValue = p3.NewValue or p3[4]
+
+    local v4 = TweenInfo.new(p3.Time, Enum.EasingStyle.Quint)
+    local v5 = u1.TweenService:Create(p3.Object, v4, {
+        [p3.OldValue] = p3.NewValue,
+    })
+
+    v5:Play()
+
+    return v5
+end
+function u1.Click(p6, p7)
+    p6.Activated:Connect(function()
+        p7()
+    end)
+end
+function u1.Find(p8, p9)
+    local v10 = next
+    local v11, v12 = p8:GetChildren()
+
+    while true do
+        local v13
+
+        v12, v13 = v10(v11, v12)
+
+        if v12 == nil then
+            break
+        end
+        if v13.Name == p9 then
+            return v13
+        end
+    end
+end
+function u1.Mouseto(p14, p15, p16)
+    p14.MouseEnter:Connect(function()
+        p15()
+    end)
+    p14.MouseLeave:Connect(function()
+        p16()
+    end)
+end
+function u1.MakeDraggable(p17, p18)
+    local u19 = nil
+    local u20 = nil
+    local u21 = nil
+    local u22 = nil
+
+    local function u25(p23)
+        local v24 = p23.Position - u19
+
+        p17.Position = UDim2.new(u20.X.Scale, u20.X.Offset + v24.X, u20.Y.Scale, u20.Y.Offset + v24.Y)
+    end
+
+    p18.InputBegan:Connect(function(p26)
+        if p26.UserInputType == Enum.UserInputType.MouseButton1 or p26.UserInputType == Enum.UserInputType.Touch then
+            u21 = true
+            u19 = p26.Position
+            u20 = p17.Position
+
+            p26.Changed:Connect(function()
+                if p26.UserInputState == Enum.UserInputState.End then
+                    u21 = false
+                end
+            end)
+        end
+    end)
+    p18.InputChanged:Connect(function(p27)
+        if p27.UserInputType == Enum.UserInputType.MouseMovement or p27.UserInputType == Enum.UserInputType.Touch then
+            u22 = p27
+        end
+    end)
+    u1.UserInputService.InputChanged:Connect(function(p28)
+        if p28 == u22 and u21 then
+            u25(p28)
+        end
+    end)
+end
+function u1.CustomSize(p29)
+    local u30 = false
+    local u31 = nil
+    local u32 = nil
+    local u33 = nil
+    local _Offset = p29.Size.X.Offset
+    local _Offset2 = p29.Size.Y.Offset
+
+    p29.Size = UDim2.new(0, _Offset, 0, _Offset2)
+
+    local _Frame = Instance.new('Frame')
+
+    _Frame.AnchorPoint = Vector2.new(1, 1)
+    _Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame.BackgroundTransparency = 0.9990000128746033
+    _Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame.BorderSizePixel = 0
+    _Frame.Position = UDim2.new(1, 20, 1, 20)
+    _Frame.Size = UDim2.new(0, 40, 0, 40)
+    _Frame.Name = 'changesizeobject'
+    _Frame.Parent = p29
+
+    u1.Mouseto(_Frame, function()
+        u1.Mouse.Icon = 'rbxassetid://97880490001888'
+    end, function()
+        u1.Mouse.Icon = _Icon
+    end)
+
+    local function u43(p37)
+        local v38 = p37.Position - u32
+        local v39 = u33.X.Offset + v38.X
+        local v40 = u33.Y.Offset + v38.Y
+        local v41 = math.max(v39, _Offset)
+        local v42 = math.max(v40, _Offset2)
+
+        p29.Size = UDim2.new(0, v41, 0, v42)
+    end
+
+    _Frame.InputBegan:Connect(function(p44)
+        if p44.UserInputType == Enum.UserInputType.MouseButton1 or p44.UserInputType == Enum.UserInputType.Touch then
+            u30 = true
+            u32 = p44.Position
+            u33 = p29.Size
+
+            p44.Changed:Connect(function()
+                if p44.UserInputState == Enum.UserInputState.End then
+                    u30 = false
+                end
+            end)
+        end
+    end)
+    _Frame.InputChanged:Connect(function(p45)
+        if p45.UserInputType == Enum.UserInputType.MouseMovement or p45.UserInputType == Enum.UserInputType.Touch then
+            u31 = p45
+        end
+    end)
+    u1.UserInputService.InputChanged:Connect(function(p46)
+        if p46 == u31 and u30 then
+            u43(p46)
+        end
+    end)
+end
+function GetMidPos(p47)
+    return UDim2.new(0, u1.ViewportSize.X / 2 - p47.Size.X.Offset / 2, 0, u1.ViewportSize.Y / 2 - p47.Size.Y.Offset / 2)
+end
+function u1.Notify(_, p48)
+    local u49 = p48 or {}
+
+    u49.Title = u49.Title or 'Zinner Hub'
+    u49.Content = u49.Content or '...'
+    u49.Description = u49.Description or 'By Nam'
+    u49.Duration = u49.Duration or 5
+
+    spawn(function()
+        if not u1.plrGUI.Window:FindFirstChild('NotifyLayout') then
+            local _Frame2 = Instance.new('Frame')
+
+            _Frame2.Name = 'NotifyLayout'
+            _Frame2.Parent = u1.plrGUI.Window
+            _Frame2.AnchorPoint = Vector2.new(0, 1)
+            _Frame2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            _Frame2.BackgroundTransparency = 0.999
+            _Frame2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            _Frame2.BorderSizePixel = 0
+            _Frame2.Position = UDim2.new(1.5, -30, 1, -30)
+            _Frame2.Size = UDim2.new(0, 280, 0, -105)
+            _Frame2.ZIndex = 5
+
+            local u51 = 0
+
+            u1.plrGUI.Window.NotifyLayout.ChildRemoved:Connect(function()
+                u51 = 0
+
+                local v52, v53, v54 = pairs(u1.plrGUI.Window.NotifyLayout:GetChildren())
+
+                while true do
+                    local v55
+
+                    v54, v55 = v52(v53, v54)
+
+                    if v54 == nil then
+                        break
+                    end
+                    if v55.ClassName ~= 'UICorner' then
+                        u1.TweenObject({
+                            v55,
+                            0.6,
+                            'Position',
+                            UDim2.new(0, 0, 1, -((v55.Size.Y.Offset + 15) * u51)),
+                        })
+
+                        u51 = u51 + 1
+                    end
+                end
+            end)
+        end
+
+        local v56, v57, v58 = pairs(u1.plrGUI.Window.NotifyLayout:GetChildren())
+        local v59 = 0
+
+        while true do
+            local v60
+
+            v58, v60 = v56(v57, v58)
+
+            if v58 == nil then
+                break
+            end
+
+            v59 = -v60.Position.Y.Offset + v60.Size.Y.Offset + 15
+        end
+
+        local _Frame3 = Instance.new('Frame')
+        local _Frame4 = Instance.new('Frame')
+        local _Frame5 = Instance.new('Frame')
+        local _TextLabel = Instance.new('TextLabel')
+        local _TextButton = Instance.new('TextButton')
+        local _ImageLabel = Instance.new('ImageLabel')
+        local _UICorner = Instance.new('UICorner')
+        local _Frame6 = Instance.new('Frame')
+        local _ImageLabel2 = Instance.new('ImageLabel')
+        local _TextLabel2 = Instance.new('TextLabel')
+        local _TextLabel3 = Instance.new('TextLabel')
+        local _UIStroke = Instance.new('UIStroke')
+
+        _Frame3.Name = 'NotifyFrame'
+        _Frame3.Parent = u1.plrGUI.Window:FindFirstChild('NotifyLayout')
+        _Frame3.AnchorPoint = Vector2.new(0, 1)
+        _Frame3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _Frame3.BackgroundTransparency = 0.999
+        _Frame3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _Frame3.BorderSizePixel = 0
+        _Frame3.Position = UDim2.new(0, 0, 1, -v59)
+        _Frame3.Size = UDim2.new(1, 0, 0, 84)
+        _Frame4.Name = 'NotifyFrameReal'
+        _Frame4.Parent = _Frame3
+        _Frame4.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        _Frame4.BackgroundTransparency = 0.15
+        _Frame4.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _Frame4.BorderSizePixel = 0
+        _Frame4.Size = UDim2.new(1, 0, 1, 0)
+        _Frame5.Name = 'NotifyTop'
+        _Frame5.Parent = _Frame4
+        _Frame5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _Frame5.BackgroundTransparency = 0.999
+        _Frame5.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _Frame5.BorderSizePixel = 0
+        _Frame5.Size = UDim2.new(1, 0, 0, 43)
+        _Frame5.ZIndex = 2
+        _TextLabel.Name = 'NotifyTopTitle'
+        _TextLabel.Parent = _Frame5
+        _TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _TextLabel.BackgroundTransparency = 0.999
+        _TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _TextLabel.BorderSizePixel = 0
+        _TextLabel.Position = UDim2.new(0, 15, 0, 15)
+        _TextLabel.Size = UDim2.new(0, 86, 0, 13)
+        _TextLabel.Font = Enum.Font.GothamBold
+        _TextLabel.Text = u49.Title
+        _TextLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+        _TextLabel.TextSize = 13
+        _TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+        _TextButton.Name = 'NotifyCloseButton'
+        _TextButton.Parent = _Frame5
+        _TextButton.AnchorPoint = Vector2.new(1, 0)
+        _TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _TextButton.BackgroundTransparency = 0.999
+        _TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _TextButton.BorderSizePixel = 0
+        _TextButton.Position = UDim2.new(1, -2, 0, 0)
+        _TextButton.Size = UDim2.new(0, 43, 0, 43)
+        _TextButton.Font = Enum.Font.SourceSans
+        _TextButton.Text = ''
+        _TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        _TextButton.TextSize = 14
+        _ImageLabel.Name = 'NotifyCloseImage'
+        _ImageLabel.Parent = _TextButton
+        _ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+        _ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _ImageLabel.BackgroundTransparency = 0.999
+        _ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _ImageLabel.BorderSizePixel = 0
+        _ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+        _ImageLabel.Size = UDim2.new(1, -25, 1, -25)
+        _ImageLabel.Image = 'rbxassetid://18556800637'
+        _ImageLabel.ImageColor3 = Color3.fromRGB(230, 230, 230)
+        _UICorner.CornerRadius = UDim.new(0, 5)
+        _UICorner.Parent = _Frame4
+        _Frame6.Name = 'DropShadowHolder'
+        _Frame6.Parent = _Frame4
+        _Frame6.BackgroundTransparency = 1
+        _Frame6.BorderSizePixel = 0
+        _Frame6.Size = UDim2.new(1, 0, 1, 0)
+        _Frame6.ZIndex = 0
+        _ImageLabel2.Name = 'DropShadow'
+        _ImageLabel2.Parent = _Frame6
+        _ImageLabel2.AnchorPoint = Vector2.new(0.5, 0.5)
+        _ImageLabel2.BackgroundTransparency = 1
+        _ImageLabel2.BorderSizePixel = 0
+        _ImageLabel2.Position = UDim2.new(0.496874988, 0, 0.5, 0)
+        _ImageLabel2.Size = UDim2.new(1, 47, 1, 47)
+        _ImageLabel2.ZIndex = 0
+        _ImageLabel2.Image = 'rbxassetid://6015897843'
+        _ImageLabel2.ImageColor3 = Color3.fromRGB(0, 0, 0)
+        _ImageLabel2.ImageTransparency = 0.5
+        _ImageLabel2.ScaleType = Enum.ScaleType.Slice
+        _ImageLabel2.SliceCenter = Rect.new(49, 49, 450, 450)
+        _TextLabel2.Name = 'NotifyUnderContent'
+        _TextLabel2.Parent = _Frame4
+        _TextLabel2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _TextLabel2.BackgroundTransparency = 0.999
+        _TextLabel2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _TextLabel2.BorderSizePixel = 0
+        _TextLabel2.Position = UDim2.new(0, 15, 0, 30)
+        _TextLabel2.Size = UDim2.new(1, -30, 0, 35)
+        _TextLabel2.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+        _TextLabel2.Text = u49.Content
+        _TextLabel2.TextColor3 = Color3.fromRGB(230, 230, 230)
+        _TextLabel2.TextSize = 12
+        _TextLabel2.TextWrapped = true
+        _TextLabel2.TextXAlignment = Enum.TextXAlignment.Left
+        _TextLabel2.TextYAlignment = Enum.TextYAlignment.Top
+        _TextLabel3.Name = 'NotifyUnderContent'
+        _TextLabel3.Parent = _Frame4
+        _TextLabel3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _TextLabel3.BackgroundTransparency = 0.999
+        _TextLabel3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _TextLabel3.BorderSizePixel = 0
+        _TextLabel3.Position = UDim2.new(0, 15, 0, 55)
+        _TextLabel3.Size = UDim2.new(1, -30, 0, 12)
+        _TextLabel3.Font = Enum.Font.GothamMedium
+        _TextLabel3.Text = u49.Description
+        _TextLabel3.TextColor3 = Color3.fromRGB(230, 230, 230)
+        _TextLabel3.TextSize = 12
+        _TextLabel3.TextTransparency = 0.6
+        _TextLabel3.TextXAlignment = Enum.TextXAlignment.Left
+        _TextLabel3.Position = UDim2.new(0, 15, 0, 55 + _TextLabel2.TextBounds.Y / 2.35)
+        _UIStroke.Parent = _Frame4
+        _UIStroke.Thickness = 2.5
+
+        u1.TweenObject({
+            _Frame4,
+            0.7,
+            'Position',
+            UDim2.new(0, -880, 0, -85),
+        })
+        _TextButton.Activated:Connect(function()
+            u1.TweenObject({
+                _Frame4,
+                0.7,
+                'Position',
+                UDim2.new(0, 0, 0, -85),
+            })
+            task.wait(u49.Duration / 1.2)
+
+            Counts = Counts - 1
+
+            _Frame3:Destroy()
+        end)
+        task.wait(u49.Duration)
+        u1.TweenObject({
+            _Frame4,
+            0.7,
+            'Position',
+            UDim2.new(0, 0, 0, -85),
+        })
+        task.wait(u49.Duration / 1.2)
+
+        Counts = Counts - 1
+
+        local v73 = _Frame3
+
+        _Frame3.Destroy(v73)
+    end)
+end
+function u1.Window(_, p74)
+    local u75 = p74 or {}
+
+    u75.Title = u75.Title or 'Window 11'
+    u75.Description = u75.Description or 'by Nam'
+    u75.User = u75.User or 'Nam'
+    u75.IconUser = u75.IconUser or ''
+    u75.UseAcrylic = u75.UseAcrylic or false
+    u75.Size = u75.Size or UDim2.new(0, 600, 0, 420)
+    u75.DiscordStatus = u75.DiscordStatus or 'Time to make script'
+    u75.DisplayNameDiscord = u75.DisplayNameDiscord or '@_nguyenhoanggianam'
+    u75.DiscordDescription = u75.DiscordDescription or ''
+    u75.KeyCode = u75.KeyCode or Enum.KeyCode.RightControl
+
+    local _ScreenGui = Instance.new('ScreenGui')
+    local _Frame7 = Instance.new('Frame')
+    local _Frame8 = Instance.new('Frame')
+    local _ImageLabel3 = Instance.new('ImageLabel')
+    local _Frame9 = Instance.new('Frame')
+    local _TextLabel4 = Instance.new('TextLabel')
+    local _TextLabel5 = Instance.new('TextLabel')
+    local _TextButton2 = Instance.new('TextButton')
+    local _ImageLabel4 = Instance.new('ImageLabel')
+    local _Frame10 = Instance.new('Frame')
+    local _Frame11 = Instance.new('Frame')
+    local _TextButton3 = Instance.new('TextButton')
+    local _ImageLabel5 = Instance.new('ImageLabel')
+    local _TextButton4 = Instance.new('TextButton')
+    local _ImageLabel6 = Instance.new('ImageLabel')
+    local _Frame12 = Instance.new('Frame')
+    local _UICorner2 = Instance.new('UICorner')
+    local _Frame13 = Instance.new('Frame')
+    local _Frame14 = Instance.new('Frame')
+    local _UICorner3 = Instance.new('UICorner')
+    local _TextLabel6 = Instance.new('TextLabel')
+    local _Frame15 = Instance.new('Frame')
+    local _ImageLabel7 = Instance.new('ImageLabel')
+    local _UICorner4 = Instance.new('UICorner')
+    local _UICorner5 = Instance.new('UICorner')
+    local _UIStroke2 = Instance.new('UIStroke')
+    local _TextLabel7 = Instance.new('TextLabel')
+    local _TextButton5 = Instance.new('TextButton')
+    local _Frame16 = Instance.new('Frame')
+    local _UICorner6 = Instance.new('UICorner')
+    local _ImageLabel8 = Instance.new('ImageLabel')
+    local _Frame17 = Instance.new('Frame')
+    local _UICorner7 = Instance.new('UICorner')
+    local _Frame18 = Instance.new('Frame')
+    local _UICorner8 = Instance.new('UICorner')
+    local _Frame19 = Instance.new('Frame')
+    local _UIStroke3 = Instance.new('UIStroke')
+    local _UIStroke4 = Instance.new('UIStroke')
+    local _Frame20 = Instance.new('Frame')
+    local _TextBox = Instance.new('TextBox')
+    local _ScrollingFrame = Instance.new('ScrollingFrame')
+    local _UIListLayout = Instance.new('UIListLayout')
+    local _UICorner9 = Instance.new('UICorner')
+    local _UIStroke5 = Instance.new('UIStroke')
+
+    Instance.new('Frame')
+
+    local _Frame21 = Instance.new('Frame')
+    local _Frame22 = Instance.new('Frame')
+    local _ImageLabel9 = Instance.new('ImageLabel')
+    local _Frame23 = Instance.new('Frame')
+    local _UICorner10 = Instance.new('UICorner')
+    local _UIStroke6 = Instance.new('UIStroke')
+    local _TextLabel8 = Instance.new('TextLabel')
+    local _TextLabel9 = Instance.new('TextLabel')
+    local _Frame24 = Instance.new('Frame')
+    local _UICorner11 = Instance.new('UICorner')
+    local _Frame25 = Instance.new('Frame')
+    local _UICorner12 = Instance.new('UICorner')
+    local _TextButton6 = Instance.new('TextButton')
+    local _Frame26 = Instance.new('Frame')
+    local _UICorner13 = Instance.new('UICorner')
+    local _TextButton7 = Instance.new('TextButton')
+    local _Frame27 = Instance.new('Frame')
+    local _UICorner14 = Instance.new('UICorner')
+    local _Frame28 = Instance.new('Frame')
+    local _UICorner15 = Instance.new('UICorner')
+    local _TextLabel10 = Instance.new('TextLabel')
+    local _TextLabel11 = Instance.new('TextLabel')
+    local _Frame29 = Instance.new('Frame')
+    local _UICorner16 = Instance.new('UICorner')
+    local _Frame30 = Instance.new('Frame')
+    local _Frame31 = Instance.new('Frame')
+    local _TextButton8 = Instance.new('TextButton')
+    local _Frame32 = Instance.new('Frame')
+    local _UIStroke7 = Instance.new('UIStroke')
+    local _UICorner17 = Instance.new('UICorner')
+    local _Frame33 = Instance.new('Frame')
+    local _TextButton9 = Instance.new('TextButton')
+    local _Frame34 = Instance.new('Frame')
+    local _UIStroke8 = Instance.new('UIStroke')
+    local _UICorner18 = Instance.new('UICorner')
+    local _UIListLayout2 = Instance.new('UIListLayout')
+    local _TextLabel12 = Instance.new('TextLabel')
+    local _TextLabel13 = Instance.new('TextLabel')
+    local _TextLabel14 = Instance.new('TextLabel')
+    local _Frame35 = Instance.new('Frame')
+    local _UIStroke9 = Instance.new('UIStroke')
+    local _ImageLabel10 = Instance.new('ImageLabel')
+    local _UICorner19 = Instance.new('UICorner')
+    local _Frame36 = Instance.new('Frame')
+    local _UICorner20 = Instance.new('UICorner')
+    local _UIStroke10 = Instance.new('UIStroke')
+    local _ImageLabel11 = Instance.new('ImageLabel')
+    local _UICorner21 = Instance.new('UICorner')
+    local _Folder = Instance.new('Folder')
+    local _UICorner22 = Instance.new('UICorner')
+    local _UIStroke11 = Instance.new('UIStroke')
+    local _Frame37 = Instance.new('Frame')
+    local _Frame38 = Instance.new('Frame')
+    local _UICorner23 = Instance.new('UICorner')
+    local _UIStroke12 = Instance.new('UIStroke')
+    local _Frame39 = Instance.new('Frame')
+    local _UICorner24 = Instance.new('UICorner')
+    local _UIStroke13 = Instance.new('UIStroke')
+    local _Frame40 = Instance.new('Frame')
+    local _UICorner25 = Instance.new('UICorner')
+    local _UIStroke14 = Instance.new('UIStroke')
+    local _Frame41 = Instance.new('Frame')
+    local _UICorner26 = Instance.new('UICorner')
+    local _TextLabel15 = Instance.new('TextLabel')
+    local _TextButton10 = Instance.new('TextButton')
+    local _UICorner27 = Instance.new('UICorner')
+
+    _ScreenGui.Name = 'Window'
+    _ScreenGui.Parent = u1.plrGUI
+    _ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    _Frame7.Name = 'Window11'
+    _Frame7.Parent = _ScreenGui
+    _Frame7.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    _Frame7.BackgroundTransparency = 0.15
+    _Frame7.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame7.BorderSizePixel = 0
+    _Frame7.Size = u75.Size
+    _Frame7.Position = GetMidPos(_Frame7)
+    _UICorner9.Parent = _Frame7
+    _UIStroke5.Parent = _Frame7
+    _UIStroke5.Thickness = 2.6
+    _Frame8.Name = 'DropShadowHolder'
+    _Frame8.Parent = _Frame7
+    _Frame8.BackgroundTransparency = 1
+    _Frame8.BorderSizePixel = 0
+    _Frame8.Size = UDim2.new(1, 0, 1, 0)
+    _Frame8.ZIndex = 0
+    _ImageLabel3.Name = 'DropShadow'
+    _ImageLabel3.Parent = _Frame8
+    _ImageLabel3.AnchorPoint = Vector2.new(0.5, 0.5)
+    _ImageLabel3.BackgroundTransparency = 1
+    _ImageLabel3.BorderSizePixel = 0
+    _ImageLabel3.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _ImageLabel3.Size = UDim2.new(1, 47, 1, 47)
+    _ImageLabel3.ZIndex = 0
+    _ImageLabel3.Image = 'rbxassetid://6015897843'
+    _ImageLabel3.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel3.ImageTransparency = 0.5
+    _ImageLabel3.ScaleType = Enum.ScaleType.Slice
+    _ImageLabel3.SliceCenter = Rect.new(49, 49, 450, 450)
+    _Frame9.Name = 'Top'
+    _Frame9.Parent = _Frame7
+    _Frame9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame9.BackgroundTransparency = 0.999
+    _Frame9.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame9.BorderSizePixel = 0
+    _Frame9.Size = UDim2.new(1, 0, 0, 43)
+    _Frame9.ZIndex = 2
+    _TextLabel4.Name = 'TopTitle'
+    _TextLabel4.Parent = _Frame9
+    _TextLabel4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel4.BackgroundTransparency = 0.999
+    _TextLabel4.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel4.BorderSizePixel = 0
+    _TextLabel4.Position = UDim2.new(0, 15, 0, 15)
+    _TextLabel4.Size = UDim2.new(0, 50, 0, 13)
+    _TextLabel4.Font = Enum.Font.GothamBold
+    _TextLabel4.Text = u75.Title
+    _TextLabel4.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextLabel4.TextSize = 13
+    _TextLabel4.TextXAlignment = Enum.TextXAlignment.Left
+    _TextLabel5.Name = 'TopDescription'
+    _TextLabel5.Parent = _Frame9
+    _TextLabel5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel5.BackgroundTransparency = 0.999
+    _TextLabel5.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel5.BorderSizePixel = 0
+    _TextLabel5.Position = UDim2.new(0, 0, 0, 15)
+    _TextLabel5.Size = UDim2.new(0, 42, 0, 13)
+    _TextLabel5.Font = Enum.Font.Gotham
+    _TextLabel5.Text = u75.Description
+    _TextLabel5.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextLabel5.TextSize = 13
+    _TextLabel5.TextTransparency = 0.6
+    _TextLabel5.TextXAlignment = Enum.TextXAlignment.Left
+    _TextButton2.Name = 'CloseButton'
+    _TextButton2.Parent = _Frame9
+    _TextButton2.AnchorPoint = Vector2.new(1, 0)
+    _TextButton2.BackgroundTransparency = 1
+    _TextButton2.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+    _TextButton2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton2.BorderSizePixel = 0
+    _TextButton2.Position = UDim2.new(1, 0, 0, 0)
+    _TextButton2.Size = UDim2.new(0, 43, 0, 43)
+    _TextButton2.Font = Enum.Font.SourceSans
+    _TextButton2.AutoButtonColor = false
+    _TextButton2.Text = ''
+    _TextButton2.TextColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton2.TextSize = 14
+
+    u1.Mouseto(_TextButton2, function()
+        _TextButton2.BackgroundTransparency = 0
+        _Frame10.BackgroundTransparency = 0
+        _Frame11.BackgroundTransparency = 0
+    end, function()
+        _TextButton2.BackgroundTransparency = 1
+        _Frame10.BackgroundTransparency = 1
+        _Frame11.BackgroundTransparency = 1
+    end)
+    u1.Click(_TextButton2, function()
+        _ScreenGui:Destroy()
+    end)
+
+    _UICorner27.Parent = _TextButton2
+    _ImageLabel4.Name = 'CloseImage'
+    _ImageLabel4.Parent = _TextButton2
+    _ImageLabel4.AnchorPoint = Vector2.new(0.5, 0.5)
+    _ImageLabel4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _ImageLabel4.BackgroundTransparency = 0.999
+    _ImageLabel4.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel4.BorderSizePixel = 0
+    _ImageLabel4.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _ImageLabel4.Size = UDim2.new(1, -25, 1, -25)
+    _ImageLabel4.Image = 'rbxassetid://18556800637'
+    _ImageLabel4.ImageColor3 = Color3.fromRGB(230, 230, 230)
+    _UICorner2.Parent = _TextButton2
+    _Frame10.Parent = _TextButton2
+    _Frame10.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+    _Frame10.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame10.BorderSizePixel = 0
+    _Frame10.Size = UDim2.new(0, 7, 1, 0)
+    _Frame10.BackgroundTransparency = 1
+    _Frame11.Parent = _TextButton2
+    _Frame11.BackgroundColor3 = Color3.fromRGB(199, 0, 0)
+    _Frame11.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame11.BorderSizePixel = 0
+    _Frame11.BackgroundTransparency = 1
+    _Frame11.Position = UDim2.new(0, 0, 1, -5)
+    _Frame11.Size = UDim2.new(1, 0, 0, 5)
+    _TextButton3.Name = 'MaxButton'
+    _TextButton3.Parent = _Frame9
+    _TextButton3.AutoButtonColor = false
+    _TextButton3.AnchorPoint = Vector2.new(1, 0)
+    _TextButton3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton3.BackgroundTransparency = 0.999
+    _TextButton3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton3.BorderSizePixel = 0
+    _TextButton3.Position = UDim2.new(1, -42, 0, 0)
+    _TextButton3.Size = UDim2.new(0, 43, 0, 43)
+    _TextButton3.Font = Enum.Font.SourceSans
+    _TextButton3.Text = ''
+    _TextButton3.TextColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton3.TextSize = 14
+
+    u1.Click(_TextButton3, function()
+        if _Frame7.Size.Y.Scale >= 1 then
+            u1.TweenObject({
+                _Frame7,
+                0.5,
+                'Size',
+                OldSize,
+            })
+            u1.TweenObject({
+                _Frame7,
+                0.5,
+                'Position',
+                OldPos,
+            })
+        else
+            OldPos = _Frame7.Position
+            OldSize = _Frame7.Size
+
+            u1.TweenObject({
+                _Frame7,
+                0.5,
+                'Size',
+                UDim2.new(1, 0, 1, 0),
+            })
+            u1.TweenObject({
+                _Frame7,
+                0.5,
+                'Position',
+                UDim2.new(0, 0, 0, 0),
+            })
+        end
+    end)
+    u1.Mouseto(_TextButton3, function()
+        _TextButton3.BackgroundTransparency = 0.97
+    end, function()
+        _TextButton3.BackgroundTransparency = 0.999
+    end)
+
+    _ImageLabel5.Name = 'MaxImage'
+    _ImageLabel5.Parent = _TextButton3
+    _ImageLabel5.AnchorPoint = Vector2.new(0.5, 0.5)
+    _ImageLabel5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _ImageLabel5.BackgroundTransparency = 0.999
+    _ImageLabel5.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel5.BorderSizePixel = 0
+    _ImageLabel5.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _ImageLabel5.Size = UDim2.new(1, -26, 1, -26)
+    _ImageLabel5.Image = 'rbxassetid://9886659406'
+    _ImageLabel5.ImageColor3 = Color3.fromRGB(230, 230, 230)
+    _TextButton4.Name = 'HideButton'
+    _TextButton4.Parent = _Frame9
+    _TextButton4.AutoButtonColor = false
+    _TextButton4.AnchorPoint = Vector2.new(1, 0)
+    _TextButton4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton4.BackgroundTransparency = 0.999
+    _TextButton4.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton4.BorderSizePixel = 0
+    _TextButton4.Position = UDim2.new(1, -83, 0, 0)
+    _TextButton4.Size = UDim2.new(0, 43, 0, 43)
+    _TextButton4.Font = Enum.Font.SourceSans
+    _TextButton4.Text = ''
+    _TextButton4.TextColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton4.TextSize = 14
+
+    u1.Mouseto(_TextButton4, function()
+        _TextButton4.BackgroundTransparency = 0.97
+    end, function()
+        _TextButton4.BackgroundTransparency = 0.999
+    end)
+    u1.Click(_TextButton4, function()
+        _Frame7.Visible = false
+    end)
+
+    _ImageLabel6.Name = 'HideImage'
+    _ImageLabel6.Parent = _TextButton4
+    _ImageLabel6.AnchorPoint = Vector2.new(0.5, 0.5)
+    _ImageLabel6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _ImageLabel6.BackgroundTransparency = 0.999
+    _ImageLabel6.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel6.BorderSizePixel = 0
+    _ImageLabel6.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _ImageLabel6.Size = UDim2.new(1, -26, 1, -26)
+    _ImageLabel6.Image = 'rbxassetid://18556824827'
+    _ImageLabel6.ImageColor3 = Color3.fromRGB(230, 230, 230)
+    _Frame12.Name = 'DecideFrame'
+    _Frame12.Parent = _Frame9
+    _Frame12.AnchorPoint = Vector2.new(0.5, 1)
+    _Frame12.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+    _Frame12.BackgroundTransparency = 0.935
+    _Frame12.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame12.BorderSizePixel = 0
+    _Frame12.Position = UDim2.new(0.5, 0, 1, 2)
+    _Frame12.Size = UDim2.new(1, -14, 0, 2)
+    _UICorner2.CornerRadius = UDim.new(0, 100)
+    _UICorner2.Parent = _Frame12
+    _Frame13.Name = 'LayersTab'
+    _Frame13.Parent = _Frame7
+    _Frame13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame13.BackgroundTransparency = 0.999
+    _Frame13.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame13.BorderSizePixel = 0
+    _Frame13.Position = UDim2.new(0, 12, 0, 52)
+    _Frame13.Size = UDim2.new(0, 180, 1, -64)
+    _Frame14.Name = 'Info'
+    _Frame14.Parent = _Frame13
+    _Frame14.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame14.BackgroundTransparency = 1
+    _Frame14.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame14.BorderSizePixel = 0
+    _Frame14.Size = UDim2.new(1, 0, 0, 50)
+
+    u1.Mouseto(_Frame14, function()
+        _Frame14.BackgroundTransparency = 0.97
+    end, function()
+        _Frame14.BackgroundTransparency = 1
+    end)
+
+    _UICorner3.CornerRadius = UDim.new(0, 4)
+    _UICorner3.Parent = _Frame14
+    _TextLabel6.Name = 'NamePlayer'
+    _TextLabel6.Parent = _Frame14
+    _TextLabel6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel6.BackgroundTransparency = 0.999
+    _TextLabel6.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel6.BorderSizePixel = 0
+    _TextLabel6.Position = UDim2.new(0, 52, 0, 14)
+    _TextLabel6.Size = UDim2.new(1, -60, 0, 12)
+    _TextLabel6.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    _TextLabel6.Text = 'Nam'
+    _TextLabel6.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextLabel6.TextSize = 13
+    _TextLabel6.TextWrapped = true
+    _TextLabel6.TextXAlignment = Enum.TextXAlignment.Left
+    _Frame15.Name = 'LogoFrame'
+    _Frame15.Parent = _Frame14
+    _Frame15.AnchorPoint = Vector2.new(0, 0.5)
+    _Frame15.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame15.BackgroundTransparency = 0.95
+    _Frame15.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame15.BorderSizePixel = 0
+    _Frame15.Position = UDim2.new(0, 2, 0.5, 0)
+    _Frame15.Size = UDim2.new(0, 40, 0, 40)
+    _ImageLabel7.Name = 'LogoPlayer'
+    _ImageLabel7.Parent = _Frame15
+    _ImageLabel7.AnchorPoint = Vector2.new(0.5, 0.5)
+    _ImageLabel7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _ImageLabel7.BackgroundTransparency = 0.999
+    _ImageLabel7.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel7.BorderSizePixel = 0
+    _ImageLabel7.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _ImageLabel7.Size = UDim2.new(1, 0, 1, 0)
+    _ImageLabel7.Image = 'rbxassetid://132971800188599'
+    _UICorner4.CornerRadius = UDim.new(0, 1000)
+    _UICorner4.Parent = _ImageLabel7
+    _UICorner5.CornerRadius = UDim.new(0, 1000)
+    _UICorner5.Parent = _Frame15
+    _UIStroke2.Parent = _Frame15
+    _UIStroke2.Color = Color3.fromRGB(255, 255, 255)
+    _UIStroke2.Transparency = 0.95
+    _UIStroke2.Thickness = 2
+    _TextLabel7.Name = 'DescriptionPlayer'
+    _TextLabel7.Parent = _Frame14
+    _TextLabel7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel7.BackgroundTransparency = 0.999
+    _TextLabel7.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel7.BorderSizePixel = 0
+    _TextLabel7.Position = UDim2.new(0, 52, 0, 25)
+    _TextLabel7.Size = UDim2.new(1, -60, 0, 11)
+    _TextLabel7.Font = Enum.Font.GothamMedium
+    _TextLabel7.Text = 'Local Info'
+    _TextLabel7.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextLabel7.TextSize = 11
+    _TextLabel7.TextTransparency = 0.6
+    _TextLabel7.TextWrapped = true
+    _TextLabel7.TextXAlignment = Enum.TextXAlignment.Left
+    _TextButton5.Name = 'InfoButton'
+    _TextButton5.Parent = _Frame14
+    _TextButton5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton5.BackgroundTransparency = 0.999
+    _TextButton5.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton5.BorderSizePixel = 0
+    _TextButton5.Size = UDim2.new(1, 0, 1, 0)
+    _TextButton5.Font = Enum.Font.SourceSans
+    _TextButton5.Text = ''
+    _TextButton5.TextColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton5.TextSize = 14
+
+    u1.Click(_TextButton5, function()
+        _Frame27.Size = UDim2.new(0, 300, 0, 400)
+
+        u1.TweenObject({
+            _Frame27,
+            0.5,
+            'Size',
+            UDim2.new(0, 350, 0, 450),
+        })
+
+        _Frame21.Visible = true
+    end)
+
+    _Frame16.Name = 'SearchFrame'
+    _Frame16.Parent = _Frame13
+    _Frame16.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame16.BackgroundTransparency = 0.96
+    _Frame16.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame16.BorderSizePixel = 0
+    _Frame16.ClipsDescendants = true
+    _Frame16.Position = UDim2.new(0, 0, 0, 60)
+    _Frame16.Size = UDim2.new(1, 0, 0, 25)
+    _UICorner6.CornerRadius = UDim.new(0, 4)
+    _UICorner6.Parent = _Frame16
+    _ImageLabel8.Name = 'SearchImage'
+    _ImageLabel8.Parent = _Frame16
+    _ImageLabel8.AnchorPoint = Vector2.new(1, 0)
+    _ImageLabel8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _ImageLabel8.BackgroundTransparency = 0.999
+    _ImageLabel8.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel8.BorderSizePixel = 0
+    _ImageLabel8.Position = UDim2.new(1, -6, 0, 6)
+    _ImageLabel8.Size = UDim2.new(0, 13, 0, 13)
+    _ImageLabel8.Image = 'rbxassetid://18557078698'
+    _ImageLabel8.ImageColor3 = Color3.fromRGB(204, 205, 206)
+    _Frame17.Name = 'SearchDecide'
+    _Frame17.Parent = _Frame16
+    _Frame17.AnchorPoint = Vector2.new(0.5, 1)
+    _Frame17.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame17.BackgroundTransparency = 0.95
+    _Frame17.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame17.BorderSizePixel = 0
+    _Frame17.Position = UDim2.new(0.5, 0, 1, 0)
+    _Frame17.Size = UDim2.new(1, -2, 0, 1)
+    _UICorner7.CornerRadius = UDim.new(0, 5)
+    _UICorner7.Parent = _Frame17
+    _Frame18.Name = 'SearchDecide'
+    _Frame18.Parent = _Frame17
+    _Frame18.AnchorPoint = Vector2.new(0.5, 1)
+    _Frame18.BackgroundColor3 = Color3.fromRGB(1, 131, 252)
+    _Frame18.BackgroundTransparency = 0.999
+    _Frame18.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame18.BorderSizePixel = 0
+    _Frame18.Position = UDim2.new(0.5, 0, 1, 0)
+    _Frame18.Size = UDim2.new(1, -4, 0, 1)
+    _UICorner8.CornerRadius = UDim.new(0, 5)
+    _UICorner8.Parent = _Frame18
+    _UIStroke3.Parent = _Frame18
+    _UIStroke3.Color = Color3.fromRGB(1, 131, 252)
+    _UIStroke3.Transparency = 0.999
+    _UIStroke3.Thickness = 0.6
+    _UIStroke4.Parent = _Frame17
+    _UIStroke4.Color = Color3.fromRGB(255, 255, 255)
+    _UIStroke4.Transparency = 0.95
+    _UIStroke4.Thickness = 0.6
+    _Frame20.Name = 'SearchBoxFrame'
+    _Frame20.Parent = _Frame16
+    _Frame20.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame20.BackgroundTransparency = 0.999
+    _Frame20.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame20.BorderSizePixel = 0
+    _Frame20.ClipsDescendants = true
+    _Frame20.Position = UDim2.new(0, 6, 0, 0)
+    _Frame20.Size = UDim2.new(1, -31, 0, 24)
+    _TextBox.Name = 'SearchBox'
+    _TextBox.Parent = _Frame20
+    _TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextBox.BackgroundTransparency = 0.999
+    _TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextBox.BorderSizePixel = 0
+    _TextBox.Position = UDim2.new(0, 1, 0, 0)
+    _TextBox.Size = UDim2.new(1, -1, 1, 0)
+    _TextBox.Font = Enum.Font.GothamMedium
+    _TextBox.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
+    _TextBox.PlaceholderText = 'Find a setting'
+    _TextBox.Text = ''
+    _TextBox.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextBox.TextSize = 11
+    _TextBox.TextXAlignment = Enum.TextXAlignment.Left
+    _ScrollingFrame.Name = 'ScrollTab'
+    _ScrollingFrame.Parent = _Frame13
+    _ScrollingFrame.Active = true
+    _ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _ScrollingFrame.BackgroundTransparency = 0.999
+    _ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ScrollingFrame.BorderSizePixel = 0
+    _ScrollingFrame.Position = UDim2.new(0, 0, 0, 95)
+    _ScrollingFrame.Size = UDim2.new(1, 0, 1, -95)
+    _ScrollingFrame.ZIndex = 0
+    _ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+    _ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 220)
+    _ScrollingFrame.ScrollBarImageTransparency = 0.85
+    _ScrollingFrame.ScrollBarThickness = 0
+
+    u1.Stepped:Connect(function()
+        _ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, _UIListLayout.AbsoluteContentSize.Y + 15)
+    end)
+
+    _UIListLayout.Parent = _ScrollingFrame
+    _UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    _UIListLayout.Padding = UDim.new(0, 1)
+    _Frame21.Name = 'AnotherFrame'
+    _Frame21.Parent = _Frame7
+    _Frame21.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame21.BackgroundTransparency = 0.999
+    _Frame21.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame21.BorderSizePixel = 0
+    _Frame21.Size = UDim2.new(1, 0, 1, 0)
+    _Frame21.Visible = false
+    _Frame21.ZIndex = 5
+    _Frame22.Name = 'DropShadowHolder'
+    _Frame22.Parent = _Frame21
+    _Frame22.BackgroundTransparency = 1
+    _Frame22.BorderSizePixel = 0
+    _Frame22.Size = UDim2.new(1, 0, 1, 0)
+    _Frame22.ZIndex = 0
+    _ImageLabel9.Name = 'DropShadow'
+    _ImageLabel9.Parent = _Frame22
+    _ImageLabel9.AnchorPoint = Vector2.new(0.5, 0.5)
+    _ImageLabel9.BackgroundTransparency = 1
+    _ImageLabel9.BorderSizePixel = 0
+    _ImageLabel9.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _ImageLabel9.Size = UDim2.new(1, 47, 1, 47)
+    _ImageLabel9.ZIndex = 0
+    _ImageLabel9.Image = 'rbxassetid://6015897843'
+    _ImageLabel9.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel9.ImageTransparency = 0.5
+    _ImageLabel9.ScaleType = Enum.ScaleType.Slice
+    _ImageLabel9.SliceCenter = Rect.new(49, 49, 450, 450)
+    _Frame23.Name = 'LogFrame'
+    _Frame23.Parent = _ImageLabel9
+    _Frame23.AnchorPoint = Vector2.new(0.5, 0.5)
+    _Frame23.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    _Frame23.BackgroundTransparency = 0.05
+    _Frame23.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame23.BorderSizePixel = 0
+    _Frame23.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _Frame23.Size = UDim2.new(0, 220, 0, 114)
+    _Frame23.Visible = false
+    _UICorner10.CornerRadius = UDim.new(0, 5)
+    _UICorner10.Parent = _Frame23
+    _UIStroke6.Parent = _Frame23
+    _UIStroke6.Color = Color3.fromRGB(35, 35, 35)
+    _TextLabel8.Name = 'LogTitle'
+    _TextLabel8.Parent = _Frame23
+    _TextLabel8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel8.BackgroundTransparency = 0.999
+    _TextLabel8.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel8.BorderSizePixel = 0
+    _TextLabel8.Position = UDim2.new(0, 18, 0, 18)
+    _TextLabel8.Size = UDim2.new(0, 36, 0, 18)
+    _TextLabel8.Font = Enum.Font.GothamBold
+    _TextLabel8.Text = 'Title'
+    _TextLabel8.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextLabel8.TextSize = 16
+    _TextLabel8.TextXAlignment = Enum.TextXAlignment.Left
+    _TextLabel9.Name = 'LogContent'
+    _TextLabel9.Parent = _Frame23
+    _TextLabel9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel9.BackgroundTransparency = 0.999
+    _TextLabel9.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel9.BorderSizePixel = 0
+    _TextLabel9.Position = UDim2.new(0, 18, 0, 35)
+    _TextLabel9.Size = UDim2.new(0, 82, 0, 12)
+    _TextLabel9.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    _TextLabel9.Text = 'This is a dialog '
+    _TextLabel9.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextLabel9.TextSize = 12
+    _TextLabel9.TextTransparency = 0.7
+    _TextLabel9.TextXAlignment = Enum.TextXAlignment.Left
+    _Frame24.Name = 'LogUnder'
+    _Frame24.Parent = _Frame23
+    _Frame24.AnchorPoint = Vector2.new(0, 1)
+    _Frame24.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+    _Frame24.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame24.BorderSizePixel = 0
+    _Frame24.Position = UDim2.new(0, 0, 1, 0)
+    _Frame24.Size = UDim2.new(1, 0, 1, -64)
+    _UICorner11.CornerRadius = UDim.new(0, 5)
+    _UICorner11.Parent = _Frame24
+    _Frame25.Name = 'ConfirmFrame'
+    _Frame25.Parent = _Frame24
+    _Frame25.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    _Frame25.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame25.BorderSizePixel = 0
+    _Frame25.Position = UDim2.new(0, 15, 0, 12)
+    _Frame25.Size = UDim2.new(0, 91, 0, 25)
+    _UICorner12.CornerRadius = UDim.new(0, 3)
+    _UICorner12.Parent = _Frame25
+    _TextButton6.Name = 'ConfirmButton'
+    _TextButton6.Parent = _Frame25
+    _TextButton6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton6.BackgroundTransparency = 0.999
+    _TextButton6.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton6.BorderSizePixel = 0
+    _TextButton6.Size = UDim2.new(1, 0, 1, 0)
+    _TextButton6.Font = Enum.Font.GothamBold
+    _TextButton6.Text = 'confirm'
+    _TextButton6.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextButton6.TextSize = 12
+    _Frame26.Name = 'CancelFrame'
+    _Frame26.Parent = _Frame24
+    _Frame26.AnchorPoint = Vector2.new(1, 0)
+    _Frame26.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    _Frame26.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame26.BorderSizePixel = 0
+    _Frame26.Position = UDim2.new(1, -15, 0, 12)
+    _Frame26.Size = UDim2.new(0, 91, 0, 25)
+    _UICorner13.CornerRadius = UDim.new(0, 3)
+    _UICorner13.Parent = _Frame26
+    _TextButton7.Name = 'CancelButton'
+    _TextButton7.Parent = _Frame26
+    _TextButton7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton7.BackgroundTransparency = 0.999
+    _TextButton7.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton7.BorderSizePixel = 0
+    _TextButton7.Size = UDim2.new(1, 0, 1, 0)
+    _TextButton7.Font = Enum.Font.GothamBold
+    _TextButton7.Text = 'cancel'
+    _TextButton7.TextColor3 = Color3.fromRGB(230, 230, 230)
+    _TextButton7.TextSize = 12
+    _Frame27.Name = 'DiscordFrame'
+    _Frame27.Parent = _ImageLabel9
+    _Frame27.AnchorPoint = Vector2.new(0.5, 0.5)
+    _Frame27.BackgroundColor3 = Color3.fromRGB(255, 5, 9)
+    _Frame27.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame27.BorderSizePixel = 0
+    _Frame27.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _Frame27.Size = UDim2.new(0, 350, 0, 450)
+    _Frame27.ZIndex = 3
+    _UICorner14.CornerRadius = UDim.new(0, 5)
+    _UICorner14.Parent = _Frame27
+    _Frame28.Name = 'DiscordUnder'
+    _Frame28.Parent = _Frame27
+    _Frame28.BackgroundColor3 = Color3.fromRGB(16, 18, 21)
+    _Frame28.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame28.BorderSizePixel = 0
+    _Frame28.Position = UDim2.new(0, 0, 0, 80)
+    _Frame28.Size = UDim2.new(1, 0, 1, -80)
+    _Frame28.ZIndex = 3
+    _UICorner15.CornerRadius = UDim.new(0, 3)
+    _UICorner15.Parent = _Frame28
+    _TextLabel10.Name = 'NamePlayer'
+    _TextLabel10.Parent = _Frame28
+    _TextLabel10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel10.BackgroundTransparency = 0.999
+    _TextLabel10.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel10.BorderSizePixel = 0
+    _TextLabel10.Position = UDim2.new(0, 15, 0, 54)
+    _TextLabel10.Size = UDim2.new(1, -30, 0, 16)
+    _TextLabel10.ZIndex = 3
+    _TextLabel10.Font = Enum.Font.GothamBold
+    _TextLabel10.Text = 'Nam'
+    _TextLabel10.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel10.TextSize = 18
+    _TextLabel10.TextXAlignment = Enum.TextXAlignment.Left
+    _TextLabel11.Name = 'DescriptionPlayer'
+    _TextLabel11.Parent = _Frame28
+    _TextLabel11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel11.BackgroundTransparency = 0.999
+    _TextLabel11.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel11.BorderSizePixel = 0
+    _TextLabel11.Position = UDim2.new(0, 15, 0, 70)
+    _TextLabel11.Size = UDim2.new(1, -30, 0, 14)
+    _TextLabel11.ZIndex = 3
+    _TextLabel11.Font = Enum.Font.GothamBold
+    _TextLabel11.Text = '@_nguyenhoanggianam/hoangzinner'
+    _TextLabel11.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel11.TextSize = 12
+    _TextLabel11.TextTransparency = 0.6
+    _TextLabel11.TextXAlignment = Enum.TextXAlignment.Left
+    _Frame29.Name = 'DiscordUnderUnder'
+    _Frame29.Parent = _Frame28
+    _Frame29.AnchorPoint = Vector2.new(0.5, 0)
+    _Frame29.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame29.BackgroundTransparency = 0.95
+    _Frame29.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame29.BorderSizePixel = 0
+    _Frame29.Position = UDim2.new(0.5, 0, 0, 100)
+    _Frame29.Size = UDim2.new(1, -30, 1, -115)
+    _Frame29.ZIndex = 3
+    _UICorner16.CornerRadius = UDim.new(0, 5)
+    _UICorner16.Parent = _Frame29
+    _Frame30.Name = 'DiscordUnderUnderTop'
+    _Frame30.Parent = _Frame29
+    _Frame30.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame30.BackgroundTransparency = 0.999
+    _Frame30.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame30.BorderSizePixel = 0
+    _Frame30.Position = UDim2.new(0, 12, 0, 4)
+    _Frame30.Size = UDim2.new(1, -24, 0, 25)
+    _Frame31.Name = 'DiscordTab'
+    _Frame31.Parent = _Frame30
+    _Frame31.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame31.BackgroundTransparency = 0.999
+    _Frame31.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame31.BorderSizePixel = 0
+    _Frame31.Size = UDim2.new(0, 40, 1, 0)
+    _TextButton8.Name = 'DiscordButtonTab'
+    _TextButton8.Parent = _Frame31
+    _TextButton8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton8.BackgroundTransparency = 0.999
+    _TextButton8.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton8.BorderSizePixel = 0
+    _TextButton8.Size = UDim2.new(1, 0, 1, 0)
+    _TextButton8.Font = Enum.Font.GothamBold
+    _TextButton8.Text = 'Activity'
+    _TextButton8.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton8.TextSize = 11
+    _TextButton8.TextTransparency = 0.6
+    _Frame32.Name = 'ChoosingFrameDiscord'
+    _Frame32.Parent = _Frame31
+    _Frame32.AnchorPoint = Vector2.new(0.5, 1)
+    _Frame32.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame32.BackgroundTransparency = 0.999
+    _Frame32.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame32.BorderSizePixel = 0
+    _Frame32.Position = UDim2.new(0.5, 0, 1, 0)
+    _Frame32.Size = UDim2.new(1, -14, 0, 1)
+    _UIStroke7.Parent = _Frame32
+    _UIStroke7.Color = Color3.fromRGB(255, 255, 255)
+    _UIStroke7.Transparency = 0.999
+    _UIStroke7.Thickness = 0.6
+    _UICorner17.CornerRadius = UDim.new(0, 100)
+    _UICorner17.Parent = _Frame32
+    _Frame33.Name = 'DiscordTab'
+    _Frame33.Parent = _Frame30
+    _Frame33.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame33.BackgroundTransparency = 0.999
+    _Frame33.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame33.BorderSizePixel = 0
+    _Frame33.Size = UDim2.new(0, 50, 1, 0)
+    _TextButton9.Name = 'DiscordButtonTab'
+    _TextButton9.Parent = _Frame33
+    _TextButton9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton9.BackgroundTransparency = 0.999
+    _TextButton9.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton9.BorderSizePixel = 0
+    _TextButton9.Size = UDim2.new(1, 0, 1, 0)
+    _TextButton9.Font = Enum.Font.GothamBold
+    _TextButton9.Text = 'About Me'
+    _TextButton9.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton9.TextSize = 11
+    _Frame34.Name = 'ChoosingFrameDiscord'
+    _Frame34.Parent = _Frame33
+    _Frame34.AnchorPoint = Vector2.new(0.5, 1)
+    _Frame34.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame34.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame34.BorderSizePixel = 0
+    _Frame34.Position = UDim2.new(0.5, 0, 1, 0)
+    _Frame34.Size = UDim2.new(1, -14, 0, 1)
+    _UIStroke8.Parent = _Frame34
+    _UIStroke8.Color = Color3.fromRGB(255, 255, 255)
+    _UIStroke8.Thickness = 0.6
+    _UICorner18.CornerRadius = UDim.new(0, 100)
+    _UICorner18.Parent = _Frame34
+    _UIListLayout2.Name = 'DiscordTabLayout'
+    _UIListLayout2.Parent = _Frame30
+    _UIListLayout2.FillDirection = Enum.FillDirection.Horizontal
+    _UIListLayout2.SortOrder = Enum.SortOrder.LayoutOrder
+    _UIListLayout2.Padding = UDim.new(0, 12)
+    _TextLabel12.Name = 'DiscordAboutMe'
+    _TextLabel12.Parent = _Frame29
+    _TextLabel12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel12.BackgroundTransparency = 0.999
+    _TextLabel12.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel12.BorderSizePixel = 0
+    _TextLabel12.ClipsDescendants = true
+    _TextLabel12.RichText = true
+    _TextLabel12.Position = UDim2.new(0, 15, 0, 45)
+    _TextLabel12.Size = UDim2.new(1, -30, 0, 70)
+    _TextLabel12.Font = Enum.Font.GothamMedium
+    _TextLabel12.Text = "Sleep for healthy\n<font color='rgb(0, 128, 255)'>https://guns.lol/ojsan</font>"
+    _TextLabel12.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel12.TextSize = 11
+    _TextLabel12.TextWrapped = true
+    _TextLabel12.TextXAlignment = Enum.TextXAlignment.Left
+    _TextLabel12.TextYAlignment = Enum.TextYAlignment.Top
+    _TextLabel13.Name = 'DiscordMemberSince'
+    _TextLabel13.Parent = _Frame29
+    _TextLabel13.AnchorPoint = Vector2.new(0, 1)
+    _TextLabel13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel13.BackgroundTransparency = 0.999
+    _TextLabel13.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel13.BorderSizePixel = 0
+    _TextLabel13.Position = UDim2.new(0, 15, 0, 95)
+    _TextLabel13.Size = UDim2.new(1, -30, 0, 15)
+    _TextLabel13.Font = Enum.Font.GothamBold
+    _TextLabel13.Text = 'Member Since'
+    _TextLabel13.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel13.TextSize = 11
+    _TextLabel13.TextTransparency = 0.5
+    _TextLabel13.TextXAlignment = Enum.TextXAlignment.Left
+    _TextLabel14.Name = 'DiscordMemberSinceReal'
+    _TextLabel14.Parent = _Frame29
+    _TextLabel14.AnchorPoint = Vector2.new(0, 1)
+    _TextLabel14.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel14.BackgroundTransparency = 0.999
+    _TextLabel14.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel14.BorderSizePixel = 0
+    _TextLabel14.Position = UDim2.new(0, 15, 0, 115)
+    _TextLabel14.Size = UDim2.new(1, -30, 0, 15)
+    _TextLabel14.Font = Enum.Font.GothamMedium
+    _TextLabel14.Text = '23 September 2024'
+    _TextLabel14.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel14.TextSize = 12
+    _TextLabel14.TextWrapped = true
+    _TextLabel14.TextXAlignment = Enum.TextXAlignment.Left
+    _Frame35.Name = 'RealLogoFrame'
+    _Frame35.Parent = _Frame27
+    _Frame35.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame35.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame35.BorderSizePixel = 0
+    _Frame35.Position = UDim2.new(0, 15, 0, 40)
+    _Frame35.Size = UDim2.new(0, 80, 0, 80)
+    _Frame35.ZIndex = 3
+    _UIStroke9.Parent = _Frame35
+    _UIStroke9.Color = Color3.fromRGB(16, 18, 21)
+    _UIStroke9.Thickness = 4
+    _ImageLabel10.Name = 'LogoInfo'
+    _ImageLabel10.Parent = _Frame35
+    _ImageLabel10.AnchorPoint = Vector2.new(0.5, 0.5)
+    _ImageLabel10.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel10.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel10.BorderSizePixel = 0
+    _ImageLabel10.Position = UDim2.new(0.5, 0, 0.5, 0)
+    _ImageLabel10.Size = UDim2.new(1, 0, 1, 0)
+    _ImageLabel10.ZIndex = 3
+    _ImageLabel10.Image = 'rbxassetid://132971800188599'
+    _UICorner19.CornerRadius = UDim.new(0, 100)
+    _UICorner19.Parent = _ImageLabel10
+    _Frame36.Name = 'StatusFrame'
+    _Frame36.Parent = _Frame35
+    _Frame36.AnchorPoint = Vector2.new(1, 1)
+    _Frame36.BackgroundColor3 = Color3.fromRGB(16, 18, 21)
+    _Frame36.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame36.BorderSizePixel = 0
+    _Frame36.Position = UDim2.new(1, -5, 1, -5)
+    _Frame36.Size = UDim2.new(0, 15, 0, 15)
+    _Frame36.ZIndex = 3
+    _UICorner20.CornerRadius = UDim.new(0, 100)
+    _UICorner20.Parent = _Frame36
+    _UIStroke10.Parent = _Frame36
+    _UIStroke10.Color = Color3.fromRGB(16, 18, 21)
+    _UIStroke10.Thickness = 4
+    _ImageLabel11.Name = 'StatusImage'
+    _ImageLabel11.Parent = _Frame36
+    _ImageLabel11.BackgroundColor3 = Color3.fromRGB(16, 18, 21)
+    _ImageLabel11.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel11.BorderSizePixel = 0
+    _ImageLabel11.Size = UDim2.new(1, 0, 1, 0)
+    _ImageLabel11.Image = 'rbxassetid://99751366504614'
+    _UICorner21.CornerRadius = UDim.new(0, 100)
+    _UICorner21.Parent = _ImageLabel11
+    _UICorner22.CornerRadius = UDim.new(0, 100)
+    _UICorner22.Parent = _Frame35
+    _UIStroke11.Parent = _Frame27
+    _UIStroke11.Thickness = 2.6
+    _Frame37.Name = 'DiscordStatus'
+    _Frame37.Parent = _Frame27
+    _Frame37.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame37.BackgroundTransparency = 0.999
+    _Frame37.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame37.BorderSizePixel = 0
+    _Frame37.Position = UDim2.new(0, 106, 0, 64)
+    _Frame37.Size = UDim2.new(0, 110, 0, 40)
+    _Frame37.ZIndex = 3
+    _Frame38.Parent = _Frame37
+    _Frame38.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    _Frame38.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame38.BorderSizePixel = 0
+    _Frame38.Size = UDim2.new(0, 6, 0, 6)
+    _Frame38.ZIndex = 3
+    _UICorner23.CornerRadius = UDim.new(0, 100)
+    _UICorner23.Parent = _Frame38
+    _UIStroke12.Parent = _Frame38
+    _UIStroke12.Color = Color3.fromRGB(45, 45, 45)
+    _Frame39.Parent = _Frame37
+    _Frame39.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    _Frame39.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame39.BorderSizePixel = 0
+    _Frame39.Position = UDim2.new(0, 0, 0, 10)
+    _Frame39.Size = UDim2.new(0, 120, 0, 28)
+    _Frame39.ZIndex = 3
+    _UICorner24.CornerRadius = UDim.new(0, 12)
+    _UICorner24.Parent = _Frame39
+    _UIStroke13.Parent = _Frame39
+    _UIStroke13.Color = Color3.fromRGB(45, 45, 45)
+    _Frame40.Parent = _Frame39
+    _Frame40.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    _Frame40.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame40.BorderSizePixel = 0
+    _Frame40.Position = UDim2.new(0, 10, 0, -5)
+    _Frame40.Size = UDim2.new(0, 10, 0, 10)
+    _Frame40.ZIndex = 0
+    _UICorner25.CornerRadius = UDim.new(0, 100)
+    _UICorner25.Parent = _Frame40
+    _UIStroke14.Parent = _Frame40
+    _UIStroke14.Color = Color3.fromRGB(45, 45, 45)
+    _Frame41.Parent = _Frame39
+    _Frame41.BackgroundColor3 = Color3.fromRGB(26, 29, 33)
+    _Frame41.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame41.BorderSizePixel = 0
+    _Frame41.Size = UDim2.new(1, 0, 1, 0)
+    _UICorner26.CornerRadius = UDim.new(0, 100)
+    _UICorner26.Parent = _Frame41
+    _TextLabel15.Name = 'DescriptionPlayer'
+    _TextLabel15.Parent = _Frame41
+    _TextLabel15.AnchorPoint = Vector2.new(0, 0.5)
+    _TextLabel15.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel15.BackgroundTransparency = 0.999
+    _TextLabel15.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel15.BorderSizePixel = 0
+    _TextLabel15.Position = UDim2.new(0, 8, 0.5, 0)
+    _TextLabel15.Size = UDim2.new(1, -20, 0, 14)
+    _TextLabel15.Font = Enum.Font.GothamBold
+    _TextLabel15.Text = 'Time to make script'
+    _TextLabel15.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel15.TextSize = 11
+    _TextLabel15.TextXAlignment = Enum.TextXAlignment.Left
+    _TextButton10.Name = 'AnotherButton'
+    _TextButton10.Parent = _Frame22
+    _TextButton10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton10.BackgroundTransparency = 0.999
+    _TextButton10.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton10.BorderSizePixel = 0
+    _TextButton10.Size = UDim2.new(1, 0, 1, 0)
+    _TextButton10.Font = Enum.Font.SourceSans
+    _TextButton10.Text = ''
+    _TextButton10.TextColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton10.TextSize = 14
+
+    local _Frame42 = Instance.new('Frame')
+    local _Frame43 = Instance.new('Frame')
+    local _Frame44 = Instance.new('Frame')
+    local _TextButton11 = Instance.new('TextButton')
+    local _Frame45 = Instance.new('Frame')
+    local _ImageLabel12 = Instance.new('ImageLabel')
+    local _TextButton12 = Instance.new('TextButton')
+    local _UIListLayout3 = Instance.new('UIListLayout')
+    local _UIPageLayout = Instance.new('UIPageLayout')
+
+    _Frame42.Name = 'Layers'
+    _Frame42.Parent = _Frame7
+    _Frame42.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame42.BackgroundTransparency = 0.999
+    _Frame42.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame42.BorderSizePixel = 0
+    _Frame42.Position = UDim2.new(0, 204, 0, 52)
+    _Frame42.Size = UDim2.new(1, -208, 1, -60)
+    _Frame42.ZIndex = 3
+    _Frame43.Name = 'TopLayers'
+    _Frame43.Parent = _Frame42
+    _Frame43.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame43.BackgroundTransparency = 0.999
+    _Frame43.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame43.BorderSizePixel = 0
+    _Frame43.ClipsDescendants = true
+    _Frame43.Size = UDim2.new(1, 0, 0, 30)
+    _Frame44.Name = 'NameBack'
+    _Frame44.Parent = _Frame43
+    _Frame44.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame44.BackgroundTransparency = 0.999
+    _Frame44.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame44.BorderSizePixel = 0
+    _Frame44.Size = UDim2.new(0, 42, 1, 0)
+    _TextButton11.Name = 'BackButton'
+    _TextButton11.Parent = _Frame44
+    _TextButton11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton11.BackgroundTransparency = 0.999
+    _TextButton11.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton11.BorderSizePixel = 0
+    _TextButton11.Size = UDim2.new(1, 0, 1, 0)
+    _TextButton11.Font = Enum.Font.GothamBold
+    _TextButton11.Text = ''
+    _TextButton11.LayoutOrder = 0
+    _TextButton11.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton11.TextSize = 20
+    _TextButton11.TextTransparency = 0
+    _TextButton11.TextXAlignment = Enum.TextXAlignment.Left
+    _Frame45.Name = 'NameBack'
+    _Frame45.Parent = _Frame43
+    _Frame45.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame45.BackgroundTransparency = 0.999
+    _Frame45.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame45.BorderSizePixel = 0
+    _Frame45.Position = UDim2.new(0, 95, 0, 0)
+    _Frame45.Size = UDim2.new(0, 96, 1, 0)
+    _ImageLabel12.Name = 'ForwardImage'
+    _ImageLabel12.Parent = _Frame45
+    _ImageLabel12.AnchorPoint = Vector2.new(0, 0.5)
+    _ImageLabel12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _ImageLabel12.BackgroundTransparency = 0.999
+    _ImageLabel12.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _ImageLabel12.BorderSizePixel = 0
+    _ImageLabel12.Position = UDim2.new(0, 8, 0.54, 0)
+    _ImageLabel12.Size = UDim2.new(0, 16, 0, 16)
+    _ImageLabel12.Image = 'rbxassetid://18558566660'
+    _ImageLabel12.ImageColor3 = Color3.fromRGB(230, 230, 230)
+    _ImageLabel12.ImageTransparency = 1
+    _TextButton12.Name = 'BackButton'
+    _TextButton12.Parent = _Frame45
+    _TextButton12.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton12.BackgroundTransparency = 0.999
+    _TextButton12.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextButton12.BorderSizePixel = 0
+    _TextButton12.Position = UDim2.new(0, 30, 0, 0)
+    _TextButton12.Size = UDim2.new(0, 66, 1, 0)
+    _TextButton12.Font = Enum.Font.GothamBold
+    _TextButton12.Text = ''
+    _TextButton12.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextButton12.TextSize = 20
+    _TextButton12.TextTransparency = 0.6
+    _TextButton12.TextXAlignment = Enum.TextXAlignment.Left
+    _UIListLayout3.Parent = _Frame43
+    _UIListLayout3.FillDirection = Enum.FillDirection.Horizontal
+    _UIListLayout3.SortOrder = Enum.SortOrder.LayoutOrder
+    _Frame19.Name = 'RealLayers'
+    _Frame19.Parent = _Frame42
+    _Frame19.AnchorPoint = Vector2.new(1, 1)
+    _Frame19.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _Frame19.BackgroundTransparency = 0.999
+    _Frame19.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _Frame19.BorderSizePixel = 0
+    _Frame19.ClipsDescendants = true
+    _Frame19.Position = UDim2.new(1, 0, 1, 0)
+    _Frame19.Size = UDim2.new(1, 0, 1, -30)
+    _Frame19.ZIndex = 2
+    _Folder.Name = 'LayersFolder'
+    _Folder.Parent = _Frame19
+    _UIPageLayout.Name = 'LayersPageLayout'
+    _UIPageLayout.Parent = _Folder
+    _UIPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    _UIPageLayout.EasingDirection = Enum.EasingDirection.InOut
+    _UIPageLayout.EasingStyle = Enum.EasingStyle.Quad
+    _UIPageLayout.GamepadInputEnabled = false
+    _UIPageLayout.ScrollWheelInputEnabled = false
+    _UIPageLayout.TouchInputEnabled = false
+    _UIPageLayout.TweenTime = 0.3
+    _TextLabel5.Position = UDim2.new(0, _TextLabel4.TextBounds.X + 19, 0, 15)
+
+    u1.Click(_TextButton10, function()
+        u1.TweenObject({
+            _Frame27,
+            0.3,
+            'Size',
+            UDim2.new(0, 300, 0, 400),
+        })
+        wait(0.03)
+
+        _Frame21.Visible = false
+    end)
+    u1.MakeDraggable(_Frame7, _Frame9)
+
+    local v195 = _TextBox
+
+    _TextBox.GetPropertyChangedSignal(v195, 'Text'):Connect(function()
+        local v196 = next
+        local v197, v198 = _Folder:GetChildren()
+
+        while true do
+            local v199
+
+            v198, v199 = v196(v197, v198)
+
+            if v198 == nil then
+                break
+            end
+
+            local v200 = next
+            local v201, v202 = v199:GetChildren()
+
+            while true do
+                local v203
+
+                v202, v203 = v200(v201, v202)
+
+                if v202 == nil then
+                    break
+                end
+                if v203:IsA('Frame') then
+                    local v204 = v203.Name:lower():gsub(' ', '')
+                    local v205 = _TextBox.Text:lower():gsub(' ', '')
+
+                    if _TextBox.Text == '' or string.find(v204, v205) then
+                        v203.Visible = true
+                    else
+                        v203.Visible = false
+                    end
+                end
+            end
+        end
+    end)
+
+    local v206 = {}
+    local u207 = 0
+
+    function JumpTo(p208, p209)
+        warn(p208)
+
+        _TextButton11.LayoutOrder = p208
+        _TextButton11.Text = p209
+
+        _UIPageLayout:JumpToIndex(_TextButton11.LayoutOrder)
+
+        local v210 = {
+            _TextButton11,
+            0.4,
+            'TextTransparency',
+            0,
+        }
+
+        u1.TweenObject(v210)
+
+        local v211 = {
+            _TextButton12,
+            0.4,
+            'TextTransparency',
+            0.999,
+        }
+
+        u1.TweenObject(v211)
+
+        local v212 = {
+            _ImageLabel12,
+            0.4,
+            'ImageTransparency',
+            1,
+        }
+
+        u1.TweenObject(v212)
+
+        _TextButton11.Size = UDim2.new(0, _TextButton11.TextBounds.X + 3, 1, 0)
+        _Frame44.Size = UDim2.new(0, _TextButton11.Size.X.Offset, 1, 0)
+        _Frame45.Position = UDim2.new(0, _Frame44.Size.X.Offset, 0, 0)
+        _Frame45.Size = UDim2.new(1, -_Frame45.Position.X.Offset, 1, 0)
+    end
+
+    u1.CustomSize(_Frame7)
+    _TextButton11.Activated:Connect(function()
+        JumpTo(_TextButton11.LayoutOrder, _TextButton11.Text)
+    end)
+    u1.UserInputService.InputBegan:Connect(function(p213)
+        if p213.KeyCode == u75.KeyCode then
+            if _Frame7.Visible then
+                _Frame7.Visible = false
+            else
+                _Frame7.Visible = true
+            end
+        end
+    end)
+
+    function v206.AddTab(_, p214)
+        local u215 = p214 or {}
+
+        u215.Title = u215.Title or 'Tab 1'
+        u215.Icon = u215.Icon or ''
+        u215.TaskbarIcon = u215.TaskbarIcon or ''
+
+        local _Frame46 = Instance.new('Frame')
+        local _UICorner28 = Instance.new('UICorner')
+        local _ImageLabel13 = Instance.new('ImageLabel')
+        local _TextButton13 = Instance.new('TextButton')
+        local _TextLabel16 = Instance.new('TextLabel')
+        local _ScrollingFrame2 = Instance.new('ScrollingFrame')
+        local _UIListLayout4 = Instance.new('UIListLayout')
+
+        _Frame46.Name = 'Tab'
+        _Frame46.Parent = _ScrollingFrame
+        _Frame46.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _Frame46.BackgroundTransparency = 0.999
+        _Frame46.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _Frame46.BorderSizePixel = 0
+        _Frame46.Size = UDim2.new(1, 0, 0, 32)
+        _UICorner28.CornerRadius = UDim.new(0, 4)
+        _UICorner28.Parent = _Frame46
+        _ImageLabel13.Name = 'TabImage'
+        _ImageLabel13.Parent = _Frame46
+        _ImageLabel13.AnchorPoint = Vector2.new(0, 0.5)
+        _ImageLabel13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _ImageLabel13.BackgroundTransparency = 0.999
+        _ImageLabel13.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _ImageLabel13.BorderSizePixel = 0
+        _ImageLabel13.Position = UDim2.new(0, 9, 0.5, 0)
+        _ImageLabel13.Size = UDim2.new(0, 16, 0, 16)
+        _ImageLabel13.Image = u215.Icon
+        _ImageLabel13.ImageTransparency = 0.6
+        _ImageLabel13.ImageColor3 = Color3.fromRGB(230, 230, 230)
+        _TextButton13.Name = 'TabButton'
+        _TextButton13.Parent = _Frame46
+        _TextButton13.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _TextButton13.BackgroundTransparency = 0.999
+        _TextButton13.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _TextButton13.BorderSizePixel = 0
+        _TextButton13.Size = UDim2.new(1, 0, 1, 0)
+        _TextButton13.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        _TextButton13.Text = ''
+        _TextButton13.TextColor3 = Color3.fromRGB(0, 0, 0)
+        _TextButton13.TextSize = 14
+        _TextLabel16.Name = 'TabName'
+        _TextLabel16.Parent = _Frame46
+        _TextLabel16.AnchorPoint = Vector2.new(0, 0.5)
+        _TextLabel16.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _TextLabel16.BackgroundTransparency = 0.999
+        _TextLabel16.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _TextLabel16.BorderSizePixel = 0
+        _TextLabel16.Position = UDim2.new(0, 35, 0.5, 0)
+        _TextLabel16.Size = UDim2.new(1, -48, 0, 12)
+        _TextLabel16.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        _TextLabel16.Text = u215.Title
+        _TextLabel16.TextColor3 = Color3.fromRGB(230, 230, 230)
+        _TextLabel16.TextSize = 12
+        _TextLabel16.TextTransparency = 0.6
+        _TextLabel16.TextXAlignment = Enum.TextXAlignment.Left
+        _ScrollingFrame2.Name = 'ScrollLayers'
+        _ScrollingFrame2.Parent = _Folder
+        _ScrollingFrame2.Active = true
+        _ScrollingFrame2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        _ScrollingFrame2.BackgroundTransparency = 0.999
+        _ScrollingFrame2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        _ScrollingFrame2.BorderSizePixel = 0
+        _ScrollingFrame2.Size = UDim2.new(1, 0, 1, 0)
+        _ScrollingFrame2.ScrollBarImageColor3 = Color3.fromRGB(230, 230, 230)
+        _ScrollingFrame2.CanvasSize = UDim2.new(0, 0, 1.39999998, 0)
+        _ScrollingFrame2.ScrollBarImageTransparency = 0.85
+        _ScrollingFrame2.ScrollBarThickness = 3
+        _ScrollingFrame2.LayoutOrder = u207
+
+        u1.Stepped:Connect(function()
+            _ScrollingFrame2.CanvasSize = UDim2.new(0, 0, 0, _UIListLayout4.AbsoluteContentSize.Y + 15)
+        end)
+
+        _UIListLayout4.Parent = _ScrollingFrame2
+        _UIListLayout4.SortOrder = Enum.SortOrder.LayoutOrder
+        _UIListLayout4.Padding = UDim.new(0, 4)
+
+        if u207 == 0 then
+            local _Frame47 = Instance.new('Frame')
+            local _UICorner29 = Instance.new('UICorner')
+            local _UIStroke15 = Instance.new('UIStroke')
+
+            _Frame47.Name = 'ChoosingFrame'
+            _Frame47.Parent = _Frame46
+            _Frame47.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+            _Frame47.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            _Frame47.BorderSizePixel = 0
+            _Frame47.Position = UDim2.new(0, 1, 0, 10)
+            _Frame47.Size = UDim2.new(0, 2, 0, 12)
+            _UICorner29.Parent = _Frame47
+            _UIStroke15.Parent = _Frame47
+            _UIStroke15.Color = Color3.fromRGB(93, 197, 248)
+            _UIStroke15.Thickness = 0.6
+        end
+        if u207 == 0 then
+            _UIPageLayout:JumpToIndex(0)
+
+            _TextButton11.Text = _TextLabel16.Text
+            _ImageLabel13.ImageTransparency = 0
+            _Frame46.BackgroundTransparency = 0.97
+            _TextLabel16.TextTransparency = 0
+            _TextButton11.LayoutOrder = 0
+            _TextButton11.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end
+        if _UIPageLayout.CurrentPage ~= _ScrollingFrame2 then
+            u1.Mouseto(_Frame46, function()
+                _Frame46.BackgroundTransparency = 0.96
+            end, function()
+                _Frame46.BackgroundTransparency = 0.999
+            end)
+        end
+
+        _TextButton13.Activated:Connect(function()
+            local v226 = next
+            local v227, v228 = _Frame46.Parent:GetChildren()
+            local v229 = nil
+
+            while true do
+                local v230
+
+                v228, v230 = v226(v227, v228)
+
+                if v228 == nil then
+                    if v229 ~= nil and _UIPageLayout.CurrentPage ~= _ScrollingFrame2 then
+                        local v231 = next
+                        local v232, v233 = _Frame46.Parent:GetChildren()
+
+                        while true do
+                            local v234
+
+                            v233, v234 = v231(v232, v233)
+
+                            if v233 == nil then
+                                break
+                            end
+                            if v234.ClassName ~= 'UIListLayout' then
+                                u1.TweenObject({
+                                    v234,
+                                    0.5,
+                                    'BackgroundTransparency',
+                                    0.999,
+                                })
+                                u1.TweenObject({
+                                    v234.TabImage,
+                                    0.5,
+                                    'ImageTransparency',
+                                    0.6,
+                                })
+                                u1.TweenObject({
+                                    v234.TabName,
+                                    0.5,
+                                    'TextTransparency',
+                                    0.6,
+                                })
+                            end
+                        end
+
+                        local v235 = {
+                            _Frame46,
+                            0.5,
+                            'BackgroundTransparency',
+                            0.97,
+                        }
+
+                        u1.TweenObject(v235)
+
+                        local v236 = {
+                            _ImageLabel13,
+                            0.5,
+                            'ImageTransparency',
+                            0,
+                        }
+
+                        u1.TweenObject(v236)
+
+                        local v237 = {
+                            _TextLabel16,
+                            0.5,
+                            'TextTransparency',
+                            0,
+                        }
+
+                        u1.TweenObject(v237)
+                        u1.TweenObject({
+                            v229,
+                            0.5,
+                            'Position',
+                            UDim2.new(0, 1, 0, 11 + 33 * _ScrollingFrame2.LayoutOrder),
+                        })
+
+                        _TextButton11.Text = _TextLabel16.Text
+
+                        JumpTo(_ScrollingFrame2.LayoutOrder, _TextLabel16.Text)
+                    end
+
+                    return
+                end
+
+                local v238 = next
+                local v239, v240 = v230:GetChildren()
+
+                while true do
+                    local v241
+
+                    v240, v241 = v238(v239, v240)
+
+                    if v240 == nil then
+                        break
+                    end
+                    if v241.Name == 'ChoosingFrame' then
+                        v229 = v241
+
+                        break
+                    end
+                end
+            end
+        end)
+
+        local v396 = {
+            AddButton = function(_, p242)
+                local u243 = p242 or {}
+
+                u243.Title = u243.Title or 'Button'
+                u243.Icon = u243.Icon or u215.Icon
+                u243.ClickName = u243.ClickName or 'Click'
+                u243.Description = u243.Description or ''
+                u243.Callback = u243.Callback or function() end
+
+                local _Frame48 = Instance.new('Frame')
+                local _UICorner30 = Instance.new('UICorner')
+                local _TextLabel17 = Instance.new('TextLabel')
+                local _ImageLabel14 = Instance.new('ImageLabel')
+                local _TextLabel18 = Instance.new('TextLabel')
+                local _Frame49 = Instance.new('Frame')
+                local _UICorner31 = Instance.new('UICorner')
+                local _TextButton14 = Instance.new('TextButton')
+
+                _Frame48.Name = u243.Title
+                _Frame48.Parent = _ScrollingFrame2
+                _Frame48.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame48.BackgroundTransparency = 0.97
+                _Frame48.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame48.BorderSizePixel = 0
+                _Frame48.Size = UDim2.new(1, -8, 0, 45)
+                _UICorner30.CornerRadius = UDim.new(0, 4)
+                _UICorner30.Parent = _Frame48
+                _TextLabel17.Name = 'ButtonContent'
+                _TextLabel17.Parent = _Frame48
+                _TextLabel17.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel17.BackgroundTransparency = 0.999
+                _TextLabel17.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel17.BorderSizePixel = 0
+                _TextLabel17.Position = UDim2.new(0, 40, 0, 21)
+                _TextLabel17.Size = UDim2.new(1, -190, 0, 11)
+                _TextLabel17.Font = Enum.Font.GothamMedium
+                _TextLabel17.Text = u243.Description
+                _TextLabel17.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel17.TextSize = 11
+                _TextLabel17.TextTransparency = 0.6
+                _TextLabel17.TextWrapped = true
+                _TextLabel17.TextYAlignment = Enum.TextYAlignment.Top
+                _TextLabel17.TextXAlignment = Enum.TextXAlignment.Left
+                _ImageLabel14.Name = 'ButtonImage'
+                _ImageLabel14.Parent = _Frame48
+                _ImageLabel14.AnchorPoint = Vector2.new(0, 0.5)
+                _ImageLabel14.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ImageLabel14.BackgroundTransparency = 0.999
+                _ImageLabel14.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ImageLabel14.BorderSizePixel = 0
+                _ImageLabel14.Position = UDim2.new(0, 12, 0.5, 0)
+                _ImageLabel14.Size = UDim2.new(0, 16, 0, 16)
+                _ImageLabel14.Image = u243.Icon
+                _TextLabel18.Name = 'ButtonTitle'
+                _TextLabel18.Parent = _Frame48
+                _TextLabel18.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel18.BackgroundTransparency = 0.999
+                _TextLabel18.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel18.BorderSizePixel = 0
+                _TextLabel18.Position = UDim2.new(0, 40, 0, 11)
+                _TextLabel18.Size = UDim2.new(1, -190, 0, 12)
+                _TextLabel18.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+                _TextLabel18.Text = u243.Title
+                _TextLabel18.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel18.TextSize = 12
+                _TextLabel18.TextXAlignment = Enum.TextXAlignment.Left
+                _Frame49.Name = 'ButtonFrame'
+                _Frame49.Parent = _Frame48
+                _Frame49.AnchorPoint = Vector2.new(1, 0.5)
+                _Frame49.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame49.BackgroundTransparency = 0.96
+                _Frame49.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame49.BorderSizePixel = 0
+                _Frame49.Position = UDim2.new(1, -9, 0.5, 0)
+                _Frame49.Size = UDim2.new(0, 125, 0, 26)
+
+                u1.Mouseto(_Frame49, function()
+                    _Frame49.BackgroundTransparency = 0.94
+                end, function()
+                    _Frame49.BackgroundTransparency = 0.96
+                end)
+                u1.Stepped:Connect(function()
+                    local v252 = math.max(_TextLabel17.TextBounds.Y + 10, 30)
+
+                    _Frame48.Size = UDim2.new(1, -8, 0, v252 + 18)
+                    _TextLabel17.Size = UDim2.new(1, -190, 0, v252 + 10)
+                end)
+
+                _UICorner31.CornerRadius = UDim.new(0, 4)
+                _UICorner31.Parent = _Frame49
+                _TextButton14.Name = 'ButtonButton'
+                _TextButton14.Parent = _Frame49
+                _TextButton14.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextButton14.BackgroundTransparency = 0.999
+                _TextButton14.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextButton14.BorderSizePixel = 0
+                _TextButton14.Size = UDim2.new(1, 0, 1, 0)
+                _TextButton14.Font = Enum.Font.GothamMedium
+                _TextButton14.TextColor3 = Color3.fromRGB(178, 178, 178)
+                _TextButton14.TextSize = 11
+                _TextButton14.Text = u243.ClickName
+
+                if _TextLabel17.Text == '' then
+                    _TextLabel18.Position = UDim2.new(0, 40, 0, 0)
+                    _TextLabel18.Size = UDim2.new(1, -190, 1, 0)
+                end
+
+                u1.Click(_TextButton14, function()
+                    _Frame49.BackgroundTransparency = 0.85
+
+                    local v253 = {
+                        _Frame49,
+                        0.9,
+                        'BackgroundTransparency',
+                        0.96,
+                    }
+
+                    u1.TweenObject(v253)
+                    u243.Callback()
+                end)
+            end,
+            AddToggle = function(_, p254)
+                local u255 = p254 or {}
+
+                u255.Title = u255.Title or 'Toggle'
+                u255.Description = u255.Description or ''
+                u255.IconToggle = u255.IconToggle or u215.Icon
+                u255.Default = u255.Default or false
+                u255.Callback = u255.Callback or function() end
+
+                local _Frame50 = Instance.new('Frame')
+                local _TextLabel19 = Instance.new('TextLabel')
+                local _UICorner32 = Instance.new('UICorner')
+                local _TextLabel20 = Instance.new('TextLabel')
+                local _ImageLabel15 = Instance.new('ImageLabel')
+                local _Frame51 = Instance.new('Frame')
+                local _UICorner33 = Instance.new('UICorner')
+                local _Frame52 = Instance.new('Frame')
+                local _UICorner34 = Instance.new('UICorner')
+                local _UIStroke16 = Instance.new('UIStroke')
+                local _TextButton15 = Instance.new('TextButton')
+                local _TextLabel21 = Instance.new('TextLabel')
+                function u268:OnChanged(func)
+    			u255.Callback = func
+		end
+
+                _Frame50.Name = u255.Title
+                _Frame50.Parent = _ScrollingFrame2
+                _Frame50.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame50.BackgroundTransparency = 0.97
+                _Frame50.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame50.BorderSizePixel = 0
+                _Frame50.Size = UDim2.new(1, -8, 0, 45)
+
+                u1.Mouseto(_Frame50, function()
+                    _Frame50.BackgroundTransparency = 0.95
+                end, function()
+                    _Frame50.BackgroundTransparency = 0.97
+                end)
+
+                _TextLabel19.Name = 'ToggleTitle'
+                _TextLabel19.Parent = _Frame50
+                _TextLabel19.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel19.BackgroundTransparency = 0.999
+                _TextLabel19.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel19.BorderSizePixel = 0
+                _TextLabel19.Position = UDim2.new(0, 40, 0, 11)
+                _TextLabel19.Size = UDim2.new(1, -158, 0, 12)
+                _TextLabel19.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+                _TextLabel19.Text = u255.Title
+                _TextLabel19.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel19.TextSize = 12
+                _TextLabel19.TextXAlignment = Enum.TextXAlignment.Left
+                _UICorner32.CornerRadius = UDim.new(0, 4)
+                _UICorner32.Parent = _Frame50
+                _TextLabel20.Name = 'ToggleContent'
+                _TextLabel20.Parent = _Frame50
+                _TextLabel20.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel20.BackgroundTransparency = 0.999
+                _TextLabel20.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel20.BorderSizePixel = 0
+                _TextLabel20.Position = UDim2.new(0, 40, 0, 21)
+                _TextLabel20.Size = UDim2.new(1, -158, 0, 11)
+                _TextLabel20.Font = Enum.Font.GothamMedium
+                _TextLabel20.Text = u255.Description
+                _TextLabel20.TextWrapped = true
+                _TextLabel20.TextYAlignment = Enum.TextYAlignment.Top
+                _TextLabel20.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel20.TextSize = 11
+                _TextLabel20.TextTransparency = 0.6
+                _TextLabel20.TextXAlignment = Enum.TextXAlignment.Left
+                _ImageLabel15.Name = 'ToggleImage'
+                _ImageLabel15.Parent = _Frame50
+                _ImageLabel15.AnchorPoint = Vector2.new(0, 0.5)
+                _ImageLabel15.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ImageLabel15.BackgroundTransparency = 0.999
+                _ImageLabel15.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ImageLabel15.BorderSizePixel = 0
+                _ImageLabel15.Position = UDim2.new(0, 12, 0.5, 0)
+                _ImageLabel15.Size = UDim2.new(0, 16, 0, 16)
+                _ImageLabel15.Image = u255.IconToggle
+                _Frame51.Name = 'ToggleSwitch'
+                _Frame51.Parent = _Frame50
+                _Frame51.AnchorPoint = Vector2.new(1, 0.5)
+                _Frame51.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+                _Frame51.BackgroundTransparency = 0.999
+                _Frame51.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame51.BorderSizePixel = 0
+                _Frame51.Position = UDim2.new(1, -25, 0.5, 0)
+                _Frame51.Size = UDim2.new(0, 32, 0, 16)
+                _UICorner33.Parent = _Frame51
+                _Frame52.Name = 'ToggleCircle'
+                _Frame52.Parent = _Frame51
+                _Frame52.AnchorPoint = Vector2.new(0, 0.5)
+                _Frame52.BackgroundColor3 = Color3.fromRGB(113, 111, 112)
+                _Frame52.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame52.BorderSizePixel = 0
+                _Frame52.Position = UDim2.new(0, 2, 0.5, 0)
+                _Frame52.Size = UDim2.new(0, 12, 0, 12)
+                _UICorner34.CornerRadius = UDim.new(0, 15)
+                _UICorner34.Parent = _Frame52
+                _UIStroke16.Parent = _Frame51
+                _UIStroke16.Color = Color3.fromRGB(113, 111, 112)
+                _TextButton15.Name = 'ToggleButton'
+                _TextButton15.Parent = _Frame50
+                _TextButton15.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextButton15.BackgroundTransparency = 0.999
+                _TextButton15.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextButton15.BorderSizePixel = 0
+                _TextButton15.Size = UDim2.new(1, 0, 1, 0)
+                _TextButton15.Font = Enum.Font.SourceSans
+                _TextButton15.Text = ''
+                _TextButton15.TextColor3 = Color3.fromRGB(0, 0, 0)
+                _TextButton15.TextSize = 14
+                _TextLabel21.Name = 'ToggleOnOff'
+                _TextLabel21.Parent = _Frame50
+                _TextLabel21.AnchorPoint = Vector2.new(1, 0.5)
+                _TextLabel21.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel21.BackgroundTransparency = 0.999
+                _TextLabel21.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel21.BorderSizePixel = 0
+                _TextLabel21.Position = UDim2.new(1, -70, 0.5, 0)
+                _TextLabel21.Size = UDim2.new(0, 30, 0, 12)
+                _TextLabel21.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+                _TextLabel21.Text = u255.Default == false and 'Off' or 'On'
+                _TextLabel21.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel21.TextSize = 12
+                _TextLabel21.TextXAlignment = Enum.TextXAlignment.Right
+
+                if _TextLabel20.Text == '' then
+                    _TextLabel19.Position = UDim2.new(0, 40, 0, 0)
+                    _TextLabel19.Size = UDim2.new(1, -158, 1, 0)
+                end
+
+                u1.Stepped:Connect(function()
+                    local v269 = math.max(_TextLabel20.TextBounds.Y + 10, 30)
+
+                    _Frame50.Size = UDim2.new(1, -8, 0, v269 + 18)
+                    _TextLabel20.Size = UDim2.new(1, -158, 0, v269 + 10)
+                end)
+
+                function u268.SetValue(_, p270)
+                    if p270 then
+                        local v271 = {
+                            _Frame51,
+                            0.5,
+                            'BackgroundTransparency',
+                            0,
+                        }
+
+                        u1.TweenObject(v271)
+                        u1.TweenObject({
+                            _Frame52,
+                            0.5,
+                            'BackgroundColor3',
+                            Color3.fromRGB(4, 3, 1),
+                        })
+                        u1.TweenObject({
+                            _Frame52,
+                            0.5,
+                            'Position',
+                            UDim2.new(0, 17, 0.5, 0),
+                        })
+                        u1.TweenObject({
+                            _UIStroke16,
+                            0.5,
+                            'Color',
+                            Color3.fromRGB(93, 197, 248),
+                        })
+
+                        _TextLabel21.Text = 'On'
+                    else
+                        local v272 = {
+                            _Frame51,
+                            0.5,
+                            'BackgroundTransparency',
+                            0.999,
+                        }
+
+                        u1.TweenObject(v272)
+                        u1.TweenObject({
+                            _Frame52,
+                            0.5,
+                            'BackgroundColor3',
+                            Color3.fromRGB(113, 111, 112),
+                        })
+                        u1.TweenObject({
+                            _Frame52,
+                            0.5,
+                            'Position',
+                            UDim2.new(0, 2, 0.5, 0),
+                        })
+                        u1.TweenObject({
+                            _UIStroke16,
+                            0.5,
+                            'Color',
+                            Color3.fromRGB(113, 111, 112),
+                        })
+
+                        _TextLabel21.Text = 'Off'
+                    end
+
+                    u268.Enabled = p270
+
+                    u255.Callback(u268.Enabled)
+                end
+
+                _TextButton15.Activated:Connect(function()
+                    u268:SetValue(not u268.Enabled)
+                end)
+                _TextButton15.Activated:Connect(function()
+                    _Frame50.BackgroundTransparency = 0.985
+
+                    wait(0.1)
+
+                    _Frame50.BackgroundTransparency = 0.97
+                end)
+                u268:SetValue(u268.Enabled)
+
+                return u268
+            end,
+            AddDropdown = function(_, p273)
+                local u274 = p273 or {}
+
+                u274.Title = u274.Title or 'Dropdown'
+                u274.Description = u274.Description or ''
+                u274.IconDrop = u274.IconDrop or u215.Icon
+                u274.Values = u274.Values or {}
+                u274.Multi = u274.Multi or false
+                u274.Callback = u274.Callback or function() end
+
+                local _Frame53 = Instance.new('Frame')
+                local _TextLabel22 = Instance.new('TextLabel')
+                local _UICorner35 = Instance.new('UICorner')
+                local _TextLabel23 = Instance.new('TextLabel')
+                local _ImageLabel16 = Instance.new('ImageLabel')
+                local _Frame54 = Instance.new('Frame')
+                local _UICorner36 = Instance.new('UICorner')
+                local _TextLabel24 = Instance.new('TextLabel')
+                local _ImageLabel17 = Instance.new('ImageLabel')
+                local _Frame55 = Instance.new('Frame')
+                local _TextButton16 = Instance.new('TextButton')
+                local _Frame56 = Instance.new('Frame')
+                local _Frame57 = Instance.new('Frame')
+                local _Folder2 = Instance.new('Folder')
+                local _TextButton17 = Instance.new('TextButton')
+                local _UICorner37 = Instance.new('UICorner')
+                local _UIStroke17 = Instance.new('UIStroke')
+                local _ScrollingFrame3 = Instance.new('ScrollingFrame')
+                local _UIListLayout5 = Instance.new('UIListLayout')
+                local u294 = {
+                    List = u274.Values,
+                    Value = u274.Default,
+                }
+
+                _Frame55.Name = 'DropMore'
+                _Frame55.Parent = _Frame42
+                _Frame55.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame55.BackgroundTransparency = 0.999
+                _Frame55.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame55.BorderSizePixel = 0
+                _Frame55.Position = UDim2.new(0, 0, 0, 30)
+                _Frame55.Size = UDim2.new(1, 0, 1, -30)
+                _Frame55.Visible = false
+                _Frame55.ClipsDescendants = true
+                _Frame55.ZIndex = 3
+                _TextButton16.Name = 'DropButton'
+                _TextButton16.Parent = _Frame55
+                _TextButton16.AnchorPoint = Vector2.new(1, 1)
+                _TextButton16.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextButton16.BackgroundTransparency = 0.999
+                _TextButton16.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextButton16.BorderSizePixel = 0
+                _TextButton16.Position = UDim2.new(0.6, 0, 1, 10)
+                _TextButton16.Size = UDim2.new(1, 50, 1, 94)
+                _TextButton16.Font = Enum.Font.SourceSans
+                _TextButton16.Text = ''
+                _TextButton16.TextColor3 = Color3.fromRGB(0, 0, 0)
+                _TextButton16.TextSize = 14
+                _Frame56.Name = 'DropdownSelectReal'
+                _Frame56.Parent = _Frame55
+                _Frame56.AnchorPoint = Vector2.new(1, 0)
+                _Frame56.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+                _Frame56.BackgroundTransparency = 0.1
+                _Frame56.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame56.BorderSizePixel = 0
+                _Frame56.ClipsDescendants = true
+                _Frame56.Position = UDim2.new(1.42, -17, 0, 7)
+                _Frame56.Size = UDim2.new(0, 134, 1, 0)
+                _Frame57.Name = 'DropFrame'
+                _Frame57.Parent = _Frame56
+                _Frame57.AnchorPoint = Vector2.new(0, 0.5)
+                _Frame57.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame57.BackgroundTransparency = 0.999
+                _Frame57.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame57.BorderSizePixel = 0
+                _Frame57.Position = UDim2.new(0, 5, 0.5, 0)
+                _Frame57.Size = UDim2.new(1, -7, 1, -10)
+                _Folder2.Name = 'DropdownFolder'
+                _Folder2.Parent = _Frame57
+                _ScrollingFrame3.Name = 'ScrollSelect'
+                _ScrollingFrame3.Parent = _Folder2
+                _ScrollingFrame3.Active = true
+                _ScrollingFrame3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ScrollingFrame3.BackgroundTransparency = 0.999
+                _ScrollingFrame3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ScrollingFrame3.BorderSizePixel = 0
+                _ScrollingFrame3.ClipsDescendants = true
+                _ScrollingFrame3.Size = UDim2.new(1, 0, 1, 0)
+                _ScrollingFrame3.ScrollBarImageColor3 = Color3.fromRGB(230, 230, 230)
+                _ScrollingFrame3.CanvasSize = UDim2.new(0, 0, 1.10000002, 0)
+                _ScrollingFrame3.ScrollBarImageTransparency = 0.85
+                _ScrollingFrame3.ScrollBarThickness = 2
+
+                u1.Stepped:Connect(function()
+                    _ScrollingFrame3.CanvasSize = UDim2.new(0, 0, 0, _UIListLayout5.AbsoluteContentSize.Y + 15)
+                end)
+
+                _UIListLayout5.Parent = _ScrollingFrame3
+                _UIListLayout5.SortOrder = Enum.SortOrder.LayoutOrder
+                _UIListLayout5.Padding = UDim.new(0, 3)
+
+                u1.Mouseto(_Frame54, function()
+                    _Frame54.BackgroundTransparency = 0.935
+                end, function()
+                    _Frame54.BackgroundTransparency = 0.96
+                end)
+
+                _Frame53.Name = u274.Title
+                _Frame53.Parent = _ScrollingFrame2
+                _Frame53.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame53.BackgroundTransparency = 0.97
+                _Frame53.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame53.BorderSizePixel = 0
+                _Frame53.Size = UDim2.new(1, -8, 0, 45)
+                _TextLabel22.Name = 'DropdownTitle'
+                _TextLabel22.Parent = _Frame53
+                _TextLabel22.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel22.BackgroundTransparency = 0.999
+                _TextLabel22.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel22.BorderSizePixel = 0
+                _TextLabel22.Position = UDim2.new(0, 40, 0, 11)
+                _TextLabel22.Size = UDim2.new(1, -180, 0, 12)
+                _TextLabel22.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+                _TextLabel22.Text = u274.Title
+                _TextLabel22.TextColor3 = Color3.fromRGB(230, 230, 230)
+                _TextLabel22.TextSize = 12
+                _TextLabel22.TextXAlignment = Enum.TextXAlignment.Left
+                _UICorner35.CornerRadius = UDim.new(0, 4)
+                _UICorner35.Parent = _Frame53
+                _TextLabel23.Name = 'DropdownContent'
+                _TextLabel23.Parent = _Frame53
+                _TextLabel23.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel23.BackgroundTransparency = 0.999
+                _TextLabel23.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel23.BorderSizePixel = 0
+                _TextLabel23.Position = UDim2.new(0, 40, 0, 21)
+                _TextLabel23.Size = UDim2.new(1, -180, 0, 11)
+                _TextLabel23.Font = Enum.Font.GothamMedium
+                _TextLabel23.Text = u274.Description
+                _TextLabel23.TextWrapped = true
+                _TextLabel23.TextYAlignment = Enum.TextYAlignment.Top
+                _TextLabel23.TextColor3 = Color3.fromRGB(230, 230, 230)
+                _TextLabel23.TextSize = 11
+                _TextLabel23.TextTransparency = 0.6
+                _TextLabel23.TextXAlignment = Enum.TextXAlignment.Left
+                _ImageLabel16.Name = 'DropdownImage'
+                _ImageLabel16.Parent = _Frame53
+                _ImageLabel16.AnchorPoint = Vector2.new(0, 0.5)
+                _ImageLabel16.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ImageLabel16.BackgroundTransparency = 0.999
+                _ImageLabel16.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ImageLabel16.BorderSizePixel = 0
+                _ImageLabel16.Position = UDim2.new(0, 12, 0.5, 0)
+                _ImageLabel16.Size = UDim2.new(0, 16, 0, 16)
+                _ImageLabel16.Image = u274.IconDrop
+                _ImageLabel16.ImageColor3 = Color3.fromRGB(230, 230, 230)
+                _Frame54.Name = 'SelectOptionsFrame'
+                _Frame54.Parent = _Frame53
+                _Frame54.AnchorPoint = Vector2.new(1, 0.5)
+                _Frame54.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame54.BackgroundTransparency = 0.96
+                _Frame54.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame54.BorderSizePixel = 0
+                _Frame54.Position = UDim2.new(1, -9, 0.5, 0)
+                _Frame54.Size = UDim2.new(0, 125, 0, 26)
+                _UICorner36.CornerRadius = UDim.new(0, 4)
+                _UICorner36.Parent = _Frame54
+                _TextLabel24.Name = 'OptionSelecting'
+                _TextLabel24.Parent = _Frame54
+                _TextLabel24.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel24.BackgroundTransparency = 0.999
+                _TextLabel24.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel24.BorderSizePixel = 0
+                _TextLabel24.Position = UDim2.new(0, 7, 0, 0)
+                _TextLabel24.Size = UDim2.new(1, -30, 1, 0)
+                _TextLabel24.Font = Enum.Font.GothamMedium
+                _TextLabel24.Text = ''
+                _TextLabel24.TextColor3 = Color3.fromRGB(178, 178, 178)
+                _TextLabel24.TextSize = 11
+                _TextLabel24.TextXAlignment = Enum.TextXAlignment.Left
+                _ImageLabel17.Name = 'OptionImg'
+                _ImageLabel17.Parent = _Frame54
+                _ImageLabel17.AnchorPoint = Vector2.new(1, 0.5)
+                _ImageLabel17.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ImageLabel17.BackgroundTransparency = 0.999
+                _ImageLabel17.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ImageLabel17.BorderSizePixel = 0
+                _ImageLabel17.Position = UDim2.new(1, -5, 0.5, 1)
+                _ImageLabel17.Rotation = 90
+                _ImageLabel17.Size = UDim2.new(0, 16, 0, 16)
+                _ImageLabel17.Image = 'rbxassetid://18558566660'
+                _ImageLabel17.ImageColor3 = Color3.fromRGB(178, 178, 178)
+                _TextButton17.Name = 'DropdownButton'
+                _TextButton17.Parent = _Frame54
+                _TextButton17.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextButton17.BackgroundTransparency = 1
+                _TextButton17.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextButton17.BorderSizePixel = 0
+                _TextButton17.Size = UDim2.new(1, 0, 1, 0)
+                _TextButton17.Font = Enum.Font.SourceSans
+                _TextButton17.Text = ''
+                _TextButton17.TextColor3 = Color3.fromRGB(0, 0, 0)
+                _TextButton17.TextSize = 14
+                _UICorner37.CornerRadius = UDim.new(0, 3)
+                _UICorner37.Parent = _Frame56
+                _UIStroke17.Parent = _Frame56
+                _UIStroke17.Color = Color3.fromRGB(10, 10, 10)
+                _UIStroke17.Thickness = 2.5
+
+                u1.Stepped:Connect(function()
+                    local v295 = math.max(_TextLabel23.TextBounds.Y + 10, 30)
+
+                    _Frame53.Size = UDim2.new(1, -8, 0, v295 + 18)
+                    _TextLabel23.Size = UDim2.new(1, -180, 0, v295 + 10)
+                end)
+
+                if _TextLabel23.Text == '' then
+                    _TextLabel22.Size = UDim2.new(1, -180, 1, 0)
+                    _TextLabel22.Position = UDim2.new(0, 40, 0, 0)
+                end
+
+                u1.Click(_TextButton17, function()
+                    _Frame55.Visible = true
+
+                    local v296 = next
+                    local v297, v298 = _Folder:GetDescendants()
+
+                    while true do
+                        local v299
+
+                        v298, v299 = v296(v297, v298)
+
+                        if v298 == nil then
+                            break
+                        end
+                        if v299.ClassName == 'TextButton' then
+                            v299.Active = false
+                        end
+                    end
+
+                    u1.TweenObject({
+                        _Frame56,
+                        0.5,
+                        'Position',
+                        UDim2.new(1, -17, 0, 7),
+                    })
+                end)
+                u1.Click(_TextButton16, function()
+                    local v300 = next
+                    local v301, v302 = _Folder:GetDescendants()
+
+                    while true do
+                        local v303
+
+                        v302, v303 = v300(v301, v302)
+
+                        if v302 == nil then
+                            break
+                        end
+                        if v303.ClassName == 'TextButton' then
+                            v303.Active = true
+                        end
+                    end
+
+                    u1.TweenObject({
+                        _Frame56,
+                        0.5,
+                        'Position',
+                        UDim2.new(1.42, -17, 0, 7),
+                    })
+                    wait(0.1)
+
+                    _Frame55.Visible = false
+                end)
+
+                function u294.Set(_, p304)
+                    u294.Value = p304 or u294.Value
+
+                    local v305 = next
+                    local v306, v307 = _ScrollingFrame3:GetChildren()
+
+                    while true do
+                        local v308
+
+                        v307, v308 = v305(v306, v307)
+
+                        if v307 == nil then
+                            break
+                        end
+                        if v308.ClassName == 'UIListLayout' or not table.find(u294.Value, v308.OptionSelecting.Text) then
+                            if v308.ClassName ~= 'UIListLayout' and not table.find(u294.Value, v308.OptionSelecting.Text) then
+                                u1.TweenObject({
+                                    v308,
+                                    0.4,
+                                    'BackgroundTransparency',
+                                    0.999,
+                                })
+                                u1.TweenObject({
+                                    v308.ChooseFrame,
+                                    0.4,
+                                    'Size',
+                                    UDim2.new(0, 1, 0, 0),
+                                })
+
+                                v308.ChooseFrame.UIStroke.Enabled = false
+                            end
+                        else
+                            v308.ChooseFrame.UIStroke.Enabled = true
+
+                            u1.TweenObject({
+                                v308,
+                                0.4,
+                                'BackgroundTransparency',
+                                0.95,
+                            })
+                            u1.TweenObject({
+                                v308.ChooseFrame,
+                                0.4,
+                                'Size',
+                                UDim2.new(0, 1, 0, 10),
+                            })
+                        end
+                    end
+
+                    local v309, v310, v311 = pairs(u294.Value)
+                    local v312 = {}
+
+                    while true do
+                        local v313
+
+                        v311, v313 = v309(v310, v311)
+
+                        if v311 == nil then
+                            break
+                        end
+                        if typeof(v311) ~= 'number' then
+                            if typeof(v313) == 'boolean' and v313 then
+                                table.insert(v312, v311)
+                            end
+                        else
+                            table.insert(v312, v313)
+                        end
+                    end
+
+                    if #v312 ~= 0 then
+                        _TextLabel24.Text = table.concat(v312, ',')
+                    else
+                        _TextLabel24.Text = ''
+                    end
+                    if u274.Multi then
+                        u274.Callback(v312)
+                    else
+                        u274.Callback(table.concat(v312, ','))
+                    end
+                end
+
+                local u314 = 0
+
+                function u294.AddValue(_, p315)
+                    local _Frame58 = Instance.new('Frame')
+                    local _UICorner38 = Instance.new('UICorner')
+                    local _TextLabel25 = Instance.new('TextLabel')
+                    local _TextButton18 = Instance.new('TextButton')
+
+                    _Frame58.Name = 'Option'
+                    _Frame58.Parent = _ScrollingFrame3
+                    _Frame58.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
+                    _Frame58.BackgroundTransparency = 0.999
+                    _Frame58.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    _Frame58.BorderSizePixel = 0
+                    _Frame58.Size = UDim2.new(1, -5, 0, 26)
+                    _Frame58.LayoutOrder = u314
+                    _UICorner38.CornerRadius = UDim.new(0, 3)
+                    _UICorner38.Parent = _Frame58
+                    _TextLabel25.Name = 'OptionSelecting'
+                    _TextLabel25.Parent = _Frame58
+                    _TextLabel25.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    _TextLabel25.BackgroundTransparency = 0.999
+                    _TextLabel25.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    _TextLabel25.BorderSizePixel = 0
+                    _TextLabel25.Position = UDim2.new(0, 10, 0, 0)
+                    _TextLabel25.Size = UDim2.new(1, -20, 1, 0)
+                    _TextLabel25.Font = Enum.Font.GothamBold
+                    _TextLabel25.Text = p315
+                    _TextLabel25.TextColor3 = Color3.fromRGB(230, 230, 230)
+                    _TextLabel25.TextSize = 11
+                    _TextLabel25.TextXAlignment = Enum.TextXAlignment.Left
+                    _TextButton18.Name = 'OptionButton'
+                    _TextButton18.Parent = _Frame58
+                    _TextButton18.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    _TextButton18.BackgroundTransparency = 0.999
+                    _TextButton18.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    _TextButton18.BorderSizePixel = 0
+                    _TextButton18.Size = UDim2.new(1, 0, 1, 0)
+                    _TextButton18.Font = Enum.Font.GothamBold
+                    _TextButton18.Text = ''
+                    _TextButton18.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    _TextButton18.TextSize = 13
+                    _TextButton18.TextXAlignment = Enum.TextXAlignment.Left
+
+                    local _Frame59 = Instance.new('Frame')
+                    local _UIStroke18 = Instance.new('UIStroke')
+                    local _UICorner39 = Instance.new('UICorner')
+
+                    _Frame59.Name = 'ChooseFrame'
+                    _Frame59.Parent = _Frame58
+                    _Frame59.AnchorPoint = Vector2.new(0, 0.5)
+                    _Frame59.BackgroundColor3 = Color3.fromRGB(1, 131, 252)
+                    _Frame59.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    _Frame59.BorderSizePixel = 0
+                    _Frame59.Position = UDim2.new(0, 2, 0.5, 0)
+                    _Frame59.Size = UDim2.new(0, 1, 0, 0)
+                    _UIStroke18.Parent = _Frame59
+                    _UIStroke18.Color = Color3.fromRGB(1, 131, 252)
+                    _UIStroke18.Thickness = 0.8
+                    _UIStroke18.Enabled = false
+                    _UICorner39.Parent = _Frame59
+
+                    u1.Click(_TextButton18, function()
+                        if u274.Multi then
+                            if _Frame58.BackgroundTransparency < 0.999 then
+                                local v323, v324, v325 = pairs(u294.Value)
+
+                                while true do
+                                    local v326
+
+                                    v325, v326 = v323(v324, v325)
+
+                                    if v325 == nil then
+                                        break
+                                    end
+                                    if v326 == _TextLabel25.Text then
+                                        table.remove(u294.Value, v325)
+
+                                        break
+                                    end
+                                end
+
+                                u294:Set(u294.Value)
+                            else
+                                table.insert(u294.Value, _TextLabel25.Text)
+                                u294:Set(u294.Value)
+                            end
+                        else
+                            u294.Value = {
+                                _TextLabel25.Text,
+                            }
+
+                            u294:Set(u294.Value)
+                        end
+                    end)
+                end
+                function u294.Clear(_)
+                    local v327 = next
+                    local v328, v329 = _ScrollingFrame3:GetChildren()
+
+                    while true do
+                        local v330
+
+                        v329, v330 = v327(v328, v329)
+
+                        if v329 == nil then
+                            break
+                        end
+                        if v330.Name ~= 'UIListLayout' then
+                            u294.Value = {}
+                            u294.List = {}
+
+                            v330:Destroy()
+                        end
+                    end
+                end
+                function u294.Refresh(_, p331)
+                    u294:Clear()
+
+                    local v332, v333, v334 = pairs(p331)
+
+                    while true do
+                        local v335
+
+                        v334, v335 = v332(v333, v334)
+
+                        if v334 == nil then
+                            break
+                        end
+
+                        u294:AddValue(v335)
+                    end
+                end
+
+                u294:Refresh(u274.Values)
+                u294:Set(typeof(u294.Value) == 'table' and u294.Value or {
+                    u294.Value,
+                })
+
+                return u294
+            end,
+            AddSlider = function(_, p336)
+                local u337 = p336 or {}
+
+                u337.Title = u337.Title or 'Slider'
+                u337.Description = u337.Description or ''
+                u337.Max = u337.Max or 50
+                u337.Min = u337.Min or 1
+                u337.IconSlider = u337.IconSlider or u215.Icon
+                u337.Default = u337.Default or u337.Min
+                u337.Callback = u337.Callback or function() end
+
+                local _Frame60 = Instance.new('Frame')
+                local _TextLabel26 = Instance.new('TextLabel')
+                local _UICorner40 = Instance.new('UICorner')
+                local _TextLabel27 = Instance.new('TextLabel')
+                local _ImageLabel18 = Instance.new('ImageLabel')
+                local _Frame61 = Instance.new('Frame')
+                local _UICorner41 = Instance.new('UICorner')
+                local _Frame62 = Instance.new('Frame')
+                local _UICorner42 = Instance.new('UICorner')
+                local _Frame63 = Instance.new('Frame')
+                local _UICorner43 = Instance.new('UICorner')
+                local _UIStroke19 = Instance.new('UIStroke')
+                local _Frame64 = Instance.new('Frame')
+                local _TextLabel28 = Instance.new('TextLabel')
+                local u352 = {
+                    Default = u337.Default,
+                    Values = 0,
+                }
+
+                _Frame60.Name = u337.Title
+                _Frame60.Parent = _ScrollingFrame2
+                _Frame60.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame60.BackgroundTransparency = 0.97
+                _Frame60.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame60.BorderSizePixel = 0
+                _Frame60.Size = UDim2.new(1, -8, 0, 45)
+                _TextLabel26.Name = 'SliderTitle'
+                _TextLabel26.Parent = _Frame60
+                _TextLabel26.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel26.BackgroundTransparency = 0.999
+                _TextLabel26.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel26.BorderSizePixel = 0
+                _TextLabel26.Position = UDim2.new(0, 40, 0, 11)
+                _TextLabel26.Size = UDim2.new(1, -180, 0, 12)
+                _TextLabel26.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+                _TextLabel26.Text = u337.Title
+                _TextLabel26.TextColor3 = Color3.fromRGB(230, 230, 230)
+                _TextLabel26.TextSize = 12
+                _TextLabel26.TextXAlignment = Enum.TextXAlignment.Left
+                _UICorner40.CornerRadius = UDim.new(0, 4)
+                _UICorner40.Parent = _Frame60
+                _TextLabel27.Name = 'SliderContent'
+                _TextLabel27.Parent = _Frame60
+                _TextLabel27.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel27.BackgroundTransparency = 0.999
+                _TextLabel27.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel27.BorderSizePixel = 0
+                _TextLabel27.Position = UDim2.new(0, 40, 0, 21)
+                _TextLabel27.Size = UDim2.new(1, -180, 0, 11)
+                _TextLabel27.Font = Enum.Font.GothamMedium
+                _TextLabel27.Text = u337.Description
+                _TextLabel27.TextWrapped = true
+                _TextLabel27.TextYAlignment = Enum.TextYAlignment.Top
+                _TextLabel27.TextColor3 = Color3.fromRGB(230, 230, 230)
+                _TextLabel27.TextSize = 11
+                _TextLabel27.TextTransparency = 0.6
+                _TextLabel27.TextXAlignment = Enum.TextXAlignment.Left
+                _ImageLabel18.Name = 'SliderImage'
+                _ImageLabel18.Parent = _Frame60
+                _ImageLabel18.AnchorPoint = Vector2.new(0, 0.5)
+                _ImageLabel18.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ImageLabel18.BackgroundTransparency = 0.999
+                _ImageLabel18.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ImageLabel18.BorderSizePixel = 0
+                _ImageLabel18.Position = UDim2.new(0, 12, 0.5, 0)
+                _ImageLabel18.Size = UDim2.new(0, 16, 0, 16)
+                _ImageLabel18.Image = u337.IconSlider
+                _Frame61.Name = 'SliderFrame'
+                _Frame61.Parent = _Frame60
+                _Frame61.AnchorPoint = Vector2.new(1, 0.5)
+                _Frame61.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame61.BackgroundTransparency = 0.8
+                _Frame61.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame61.BorderSizePixel = 0
+                _Frame61.Position = UDim2.new(1, -12, 0.5, 0)
+                _Frame61.Size = UDim2.new(0, 100, 0, 2)
+                _UICorner41.Parent = _Frame61
+                _Frame62.Name = 'SliderDrag'
+                _Frame62.Parent = _Frame61
+                _Frame62.AnchorPoint = Vector2.new(0, 0.5)
+                _Frame62.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+                _Frame62.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame62.BorderSizePixel = 0
+                _Frame62.Position = UDim2.new(0, 0, 0.5, 0)
+                _Frame62.Size = UDim2.new(0.899999976, 0, 0, 2)
+                _UICorner42.Parent = _Frame62
+                _Frame63.Name = 'SliderCircle'
+                _Frame63.Parent = _Frame62
+                _Frame63.AnchorPoint = Vector2.new(1, 0.5)
+                _Frame63.BackgroundColor3 = Color3.fromRGB(93, 197, 248)
+                _Frame63.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame63.BorderSizePixel = 0
+                _Frame63.Position = UDim2.new(1, 0, 0.5, 0)
+                _Frame63.Size = UDim2.new(0, 8, 0, 8)
+                _UICorner43.Parent = _Frame63
+                _UIStroke19.Parent = _Frame63
+                _UIStroke19.Color = Color3.fromRGB(93, 197, 248)
+                _Frame64.Name = 'SliderFrDrag'
+                _Frame64.Parent = _Frame61
+                _Frame64.AnchorPoint = Vector2.new(0, 0.5)
+                _Frame64.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame64.BackgroundTransparency = 0.999
+                _Frame64.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame64.BorderSizePixel = 0
+                _Frame64.Position = UDim2.new(0, 0, 0.5, 0)
+                _Frame64.Size = UDim2.new(1, 0, 0, 45)
+                _TextLabel28.Name = 'SliderNumber'
+                _TextLabel28.Parent = _Frame60
+                _TextLabel28.AnchorPoint = Vector2.new(1, 0.5)
+                _TextLabel28.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel28.BackgroundTransparency = 0.999
+                _TextLabel28.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel28.BorderSizePixel = 0
+                _TextLabel28.Position = UDim2.new(1, -117, 0.5, 0)
+                _TextLabel28.Size = UDim2.new(0, 30, 0, 13)
+                _TextLabel28.Font = Enum.Font.GothamBold
+                _TextLabel28.Text = u337.Default
+                _TextLabel28.TextColor3 = Color3.fromRGB(230, 230, 230)
+                _TextLabel28.TextSize = 12
+                _TextLabel28.TextXAlignment = Enum.TextXAlignment.Right
+
+                if _TextLabel27.Text == '' then
+                    _TextLabel26.Size = UDim2.new(1, -190, 1, 0)
+                    _TextLabel26.Position = UDim2.new(0, 40, 0, 0)
+                end
+
+                u1.Stepped:Connect(function()
+                    local v353 = math.max(_TextLabel27.TextBounds.Y + 10, 30)
+
+                    _Frame60.Size = UDim2.new(1, -8, 0, v353 + 18)
+                    _TextLabel27.Size = UDim2.new(1, -180, 0, v353 + 10)
+                end)
+
+                local u354 = false
+
+                local function u358(p355, p356)
+                    local v357 = math.floor(p355 / p356 + math.sign(p355) * 0.5) * p356
+
+                    if v357 < 0 then
+                        v357 = v357 + p356
+                    end
+
+                    return v357
+                end
+
+                function u352.Set(_, p359)
+                    local v360 = math.clamp(u358(p359, 1), u337.Min, u337.Max)
+
+                    u352.Values = v360
+                    _TextLabel28.Text = tostring(v360)
+
+                    u337.Callback(u352.Values)
+                    u1.TweenObject({
+                        _Frame62,
+                        0.3,
+                        'Size',
+                        UDim2.fromScale((v360 - u337.Min) / (u337.Max - u337.Min), 1),
+                    })
+                end
+
+                _Frame61.InputBegan:Connect(function(p361)
+                    if p361.UserInputType == Enum.UserInputType.Touch or p361.UserInputType == Enum.UserInputType.MouseButton1 then
+                        u354 = true
+                    end
+                end)
+                u1.UserInputService.InputEnded:Connect(function(p362)
+                    if p362.UserInputType == Enum.UserInputType.Touch or p362.UserInputType == Enum.UserInputType.MouseButton1 then
+                        u354 = false
+                    end
+                end)
+                u1.UserInputService.InputChanged:Connect(function(p363)
+                    if u354 then
+                        local v364 = math.clamp((p363.Position.X - _Frame61.AbsolutePosition.X) / _Frame61.AbsoluteSize.X, 0, 1)
+
+                        u352:Set(u337.Min + (u337.Max - u337.Min) * v364)
+                    end
+                end)
+                _TextLabel28:GetPropertyChangedSignal('Text'):Connect(function()
+                    local _d = _TextLabel28.Text:gsub('[^%d]', '')
+
+                    if _d == '' then
+                        _TextLabel28.Text = tostring(_d)
+                    else
+                        local v366 = math.min(tonumber(_d), u337.Max)
+
+                        _TextLabel28.Text = tostring(v366)
+                    end
+                end)
+                u352:Set(u337.Default)
+
+                return u352
+            end,
+            AddInput = function(_, p367)
+                local u368 = p367 or {}
+
+                u368.Title = u368.Title or 'Input'
+                u368.Description = u368.Description or ''
+                u368.IconInput = u368.IconInput or u215.Icon
+                u368.PlaceHolder = u368.PlaceHolder or ''
+                u368.Default = u368.Default or ''
+                u368.Callback = u368.Callback or function() end
+
+                local _Frame65 = Instance.new('Frame')
+                local _TextLabel29 = Instance.new('TextLabel')
+                local _UICorner44 = Instance.new('UICorner')
+                local _TextLabel30 = Instance.new('TextLabel')
+                local _ImageLabel19 = Instance.new('ImageLabel')
+                local _Frame66 = Instance.new('Frame')
+                local _UICorner45 = Instance.new('UICorner')
+                local _Frame67 = Instance.new('Frame')
+                local _UICorner46 = Instance.new('UICorner')
+                local _UIStroke20 = Instance.new('UIStroke')
+                local _Frame68 = Instance.new('Frame')
+                local _TextBox2 = Instance.new('TextBox')
+
+                _Frame65.Name = 'TextInput'
+                _Frame65.Parent = _ScrollingFrame2
+                _Frame65.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame65.BackgroundTransparency = 0.97
+                _Frame65.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame65.BorderSizePixel = 0
+                _Frame65.Size = UDim2.new(1, -8, 0, 45)
+                _TextLabel29.Name = 'InputTitle'
+                _TextLabel29.Parent = _Frame65
+                _TextLabel29.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel29.BackgroundTransparency = 0.999
+                _TextLabel29.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel29.BorderSizePixel = 0
+                _TextLabel29.Position = UDim2.new(0, 40, 0, 11)
+                _TextLabel29.Size = UDim2.new(1, -190, 0, 12)
+                _TextLabel29.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+                _TextLabel29.Text = u368.Title
+                _TextLabel29.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel29.TextSize = 12
+                _TextLabel29.TextXAlignment = Enum.TextXAlignment.Left
+                _UICorner44.CornerRadius = UDim.new(0, 4)
+                _UICorner44.Parent = _Frame65
+                _TextLabel30.Name = 'InputContent'
+                _TextLabel30.Parent = _Frame65
+                _TextLabel30.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel30.BackgroundTransparency = 0.999
+                _TextLabel30.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel30.BorderSizePixel = 0
+                _TextLabel30.Position = UDim2.new(0, 40, 0, 21)
+                _TextLabel30.Size = UDim2.new(1, -190, 0, 11)
+                _TextLabel30.Font = Enum.Font.GothamMedium
+                _TextLabel30.Text = u368.Description
+                _TextLabel30.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel30.TextSize = 11
+                _TextLabel30.TextWrapped = true
+                _TextLabel30.TextYAlignment = Enum.TextYAlignment.Top
+                _TextLabel30.TextTransparency = 0.6
+                _TextLabel30.TextXAlignment = Enum.TextXAlignment.Left
+                _ImageLabel19.Name = 'InputImage'
+                _ImageLabel19.Parent = _Frame65
+                _ImageLabel19.AnchorPoint = Vector2.new(0, 0.5)
+                _ImageLabel19.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ImageLabel19.BackgroundTransparency = 0.999
+                _ImageLabel19.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ImageLabel19.BorderSizePixel = 0
+                _ImageLabel19.Position = UDim2.new(0, 12, 0.5, 0)
+                _ImageLabel19.Size = UDim2.new(0, 16, 0, 16)
+                _ImageLabel19.Image = u368.IconInput
+                _Frame66.Name = 'InputFrame'
+                _Frame66.Parent = _Frame65
+                _Frame66.AnchorPoint = Vector2.new(1, 0.5)
+                _Frame66.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame66.BackgroundTransparency = 0.96
+                _Frame66.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame66.BorderSizePixel = 0
+                _Frame66.ClipsDescendants = true
+                _Frame66.Position = UDim2.new(1, -9, 0.5, 0)
+                _Frame66.Size = UDim2.new(0, 125, 0, 26)
+                _UICorner45.CornerRadius = UDim.new(0, 3)
+                _UICorner45.Parent = _Frame66
+                _Frame67.Name = 'InputDecide'
+                _Frame67.Parent = _Frame66
+                _Frame67.AnchorPoint = Vector2.new(0.5, 1)
+                _Frame67.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame67.BackgroundTransparency = 0.95
+                _Frame67.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame67.BorderSizePixel = 0
+                _Frame67.Position = UDim2.new(0.5, 0, 1, 0)
+                _Frame67.Size = UDim2.new(1, -2, 0, 1)
+                _UICorner46.CornerRadius = UDim.new(0, 5)
+                _UICorner46.Parent = _Frame67
+                _UIStroke20.Parent = _Frame67
+                _UIStroke20.Color = Color3.fromRGB(255, 255, 255)
+                _UIStroke20.Transparency = 0.95
+                _UIStroke20.Thickness = 0.6
+                _Frame68.Name = 'InputBoxFrame'
+                _Frame68.Parent = _Frame66
+                _Frame68.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame68.BackgroundTransparency = 0.999
+                _Frame68.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame68.BorderSizePixel = 0
+                _Frame68.ClipsDescendants = true
+                _Frame68.Position = UDim2.new(0, 6, 0, 0)
+                _Frame68.Size = UDim2.new(1, -12, 0, 24)
+                _TextBox2.Name = 'InputBox'
+                _TextBox2.Parent = _Frame68
+                _TextBox2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextBox2.BackgroundTransparency = 0.999
+                _TextBox2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextBox2.BorderSizePixel = 0
+                _TextBox2.Position = UDim2.new(0, 1, 0, 0)
+                _TextBox2.Size = UDim2.new(1, -1, 1, 0)
+                _TextBox2.Font = Enum.Font.GothamMedium
+                _TextBox2.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
+                _TextBox2.PlaceholderText = u368.PlaceHolder
+                _TextBox2.Text = u368.Default
+                _TextBox2.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextBox2.TextSize = 11
+                _TextBox2.TextXAlignment = Enum.TextXAlignment.Left
+
+                _TextBox2.FocusLost:Connect(function()
+                    u368.Callback(_TextBox2.Text)
+                end)
+
+                if _TextLabel30.Text == '' then
+                    _TextLabel29.Size = UDim2.new(1, -190, 1, 0)
+                    _TextLabel29.Position = UDim2.new(0, 40, 0, 0)
+                end
+
+                u1.Stepped:Connect(function()
+                    local v381 = math.max(_TextLabel30.TextBounds.Y + 10, 30)
+
+                    _Frame65.Size = UDim2.new(1, -8, 0, v381 + 18)
+                    _TextLabel30.Size = UDim2.new(1, -190, 0, v381 + 10)
+                end)
+            end,
+            AddParagraph = function(_, p382)
+                local v383 = p382 or {}
+
+                v383.Title = v383.Title or 'Paragraph'
+                v383.Content = v383.Content or ''
+                v383.IconLabel = v383.IconLabel or u215.Icon
+
+                local _Frame69 = Instance.new('Frame')
+                local _TextLabel31 = Instance.new('TextLabel')
+                local _UICorner47 = Instance.new('UICorner')
+                local _TextLabel32 = Instance.new('TextLabel')
+                local _ImageLabel20 = Instance.new('ImageLabel')
+                local v389 = {
+                    Title = v383.Title,
+                    Desc = v383.Content,
+                }
+
+                _Frame69.Name = v383.Title
+                _Frame69.Parent = _ScrollingFrame2
+                _Frame69.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame69.BackgroundTransparency = 0.97
+                _Frame69.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame69.BorderSizePixel = 0
+                _Frame69.Size = UDim2.new(1, -8, 0, 45)
+                _TextLabel31.Name = 'ParagraphTitle'
+                _TextLabel31.Parent = _Frame69
+                _TextLabel31.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel31.BackgroundTransparency = 0.999
+                _TextLabel31.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel31.BorderSizePixel = 0
+                _TextLabel31.Position = UDim2.new(0, 40, 0, 11)
+                _TextLabel31.Size = UDim2.new(1, -52, 0, 12)
+                _TextLabel31.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+                _TextLabel31.Text = v383.Title
+                _TextLabel31.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel31.TextSize = 12
+                _TextLabel31.TextXAlignment = Enum.TextXAlignment.Left
+                _UICorner47.CornerRadius = UDim.new(0, 4)
+                _UICorner47.Parent = _Frame69
+                _TextLabel32.Name = 'ParagraphContent'
+                _TextLabel32.Parent = _Frame69
+                _TextLabel32.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel32.BackgroundTransparency = 0.999
+                _TextLabel32.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel32.BorderSizePixel = 0
+                _TextLabel32.Position = UDim2.new(0, 40, 0, 21)
+                _TextLabel32.Size = UDim2.new(1, -52, 0, 11)
+                _TextLabel32.Font = Enum.Font.GothamMedium
+                _TextLabel32.Text = v383.Content
+                _TextLabel32.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel32.TextSize = 11
+                _TextLabel32.TextTransparency = 0.6
+                _TextLabel32.TextWrapped = true
+                _TextLabel32.TextYAlignment = Enum.TextYAlignment.Top
+                _TextLabel32.TextXAlignment = Enum.TextXAlignment.Left
+                _ImageLabel20.Name = 'ParagraphImage'
+                _ImageLabel20.Parent = _Frame69
+                _ImageLabel20.AnchorPoint = Vector2.new(0, 0.5)
+                _ImageLabel20.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _ImageLabel20.BackgroundTransparency = 0.999
+                _ImageLabel20.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _ImageLabel20.BorderSizePixel = 0
+                _ImageLabel20.Position = UDim2.new(0, 12, 0.5, 0)
+                _ImageLabel20.Size = UDim2.new(0, 16, 0, 16)
+                _ImageLabel20.Image = v383.IconLabel
+
+                u1.Stepped:Connect(function()
+                    local v390 = math.max(_TextLabel32.TextBounds.Y + 10, 30)
+
+                    _Frame69.Size = UDim2.new(1, -8, 0, v390 + 18)
+                    _TextLabel32.Size = UDim2.new(1, -52, 0, v390 + 10)
+                end)
+
+                function v389.SetTitle(_, p391)
+                    _TextLabel31.Text = p391
+                end
+                function v389.SetDesc(_, p392)
+                    _TextLabel32.Text = p392
+                end
+
+                return v389
+            end,
+            AddSeperator = function(_, p393)
+                local _Frame70 = Instance.new('Frame')
+                local _TextLabel33 = Instance.new('TextLabel')
+
+                _Frame70.Name = p393
+                _Frame70.Parent = _ScrollingFrame2
+                _Frame70.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _Frame70.BackgroundTransparency = 0.999
+                _Frame70.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _Frame70.BorderSizePixel = 0
+                _Frame70.Size = UDim2.new(1, -8, 0, 16)
+                _TextLabel33.Name = 'Seperator'
+                _TextLabel33.Parent = _Frame70
+                _TextLabel33.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel33.BackgroundTransparency = 0.999
+                _TextLabel33.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                _TextLabel33.BorderSizePixel = 0
+                _TextLabel33.Position = UDim2.new(0, 1, 0, 0)
+                _TextLabel33.Size = UDim2.new(1, -2, 1, 0)
+                _TextLabel33.Text = p393
+                _TextLabel33.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+                _TextLabel33.TextColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel33.TextSize = 14
+                _TextLabel33.TextXAlignment = Enum.TextXAlignment.Left
+            end,
+        }
+
+        u207 = u207 + 1
+
+        return v396
+    end
+
+    return v206
+end
+
+return u1

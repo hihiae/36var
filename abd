@@ -2007,7 +2007,7 @@ function u1.Window(_, p74)
                 _TextLabel20.BackgroundTransparency = 1
                 _TextLabel20.TextColor3 = Color3.fromRGB(255, 255, 255)
                 _TextLabel20.TextTransparency = 0.6
-                _TextLabel20.TextSize = 11
+                _TextLabel20.TextSize = 9
                 _TextLabel20.TextWrapped = true
                 _TextLabel20.TextXAlignment = Enum.TextXAlignment.Left
                 _TextLabel20.TextYAlignment = Enum.TextYAlignment.Top
@@ -2037,23 +2037,13 @@ function u1.Window(_, p74)
                     _TextLabel19.Position = UDim2.new(0, 40, 0, 0)
                     _TextLabel19.Size = UDim2.new(1, -158, 1, 0)
                 end
-
                 function u268.SetValue(_, p270)
                     u268.Enabled = p270
-                    u1.TweenObject({
-                        _Switch, 0.3, 
-                        'BackgroundTransparency', 
-                        p270 and 0 or 0.999
-                    })
-                    u1.TweenObject({
-                        _Circle, 0.3, 
-                        'Position', 
-                        p270 and UDim2.new(0, 17, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
-                    })
+                    u1.TweenObject({_Switch, 0.3, 'BackgroundTransparency', p270 and 0 or 0.999})
+                    u1.TweenObject({_Circle, 0.3, 'Position', p270 and UDim2.new(0, 17, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)})
                     _Stroke.Color = p270 and Color3.fromRGB(93, 197, 248) or Color3.fromRGB(113, 111, 112)
                     config.Callback(p270)
                 end
-
                 _Btn.Activated:Connect(function() u268:SetValue(not u268.Enabled) end)
                 u268:SetValue(u268.Enabled)
                 return u268
